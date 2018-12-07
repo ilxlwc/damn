@@ -137,7 +137,7 @@
 @section('javascript')
 <script type="text/javascript">
 $('#approve_amount').on('blur',function(event){
-  
+  $('#allotAlert').html("用户 <strong >"+order_name+"</strong> 的申请的资金方为：<strong class='blue-text'>"+capital_name+"</strong>");
 });
 
 //指定业务员-》获取数据

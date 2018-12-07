@@ -15,6 +15,7 @@ class SessionsController extends Controller
     //跳转登录页
     public function create()
 	{
+		auth()->logout();
 		return view('sessions.login');
 	}
 
