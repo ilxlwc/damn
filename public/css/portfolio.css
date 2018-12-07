@@ -1,0 +1,49 @@
+/*-- portfolio --*/
+/*---------------*/
+.agileinfo-effect  {
+    background: #4acbf6;
+    overflow: hidden;
+    position: relative;
+}
+.agileinfo-effect  img{
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.5s;
+	-moz-transition: -moz-transform 0.5s;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.agileinfo-effect  p {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+    text-transform: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.35s, transform 0.35s;
+    -moz-transition: opacity 0.35s, -moz-transform 0.35s;
+    -webkit-transform: translate3d(0,50px,0);
+    transform: translate3d(0,50px,0);
+    -moz-transform: translate3d(0,50px,0);
+    -o-transform: translate3d(0,50px,0);
+    -ms-transform: translate3d(0,50px,0);
+    padding: 21px 30px;
+    font-size: 1.2em;
+    color: #fff;
+    letter-spacing: 1px;
+}
+.agileinfo-effect :hover img {
+	-webkit-transform: translate3d(0,-80px,0);
+	transform: translate3d(0,-80px,0);
+	-moz-transform: translate3d(0,-80px,0);
+	-o-transform: translate3d(0,-80px,0);
+	-ms-transform: translate3d(0,-80px,0);
+}
+.agileinfo-effect :hover p {
+	opacity: 1;
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	-o-transform: translate3d(0,0,0);
+	-ms-transform: translate3d(0,0,0);
+}
+/*-- //portfolio --*/
