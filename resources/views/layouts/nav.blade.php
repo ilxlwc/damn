@@ -1,7 +1,7 @@
 <div class="templatemo-sidebar">
   <header class="templatemo-site-header">
     <div class="square"></div>
-    <h1>@yield('title','天亮金融')</h1>
+    <h1>@yield('title','双盈信息科技')</h1>
   </header>
   <div class="profile-photo-container">
     <img src="../images/profile-photo.jpg" alt="Profile Photo" class="img-responsive">  

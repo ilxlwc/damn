@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">  
-	    <title>天亮金融</title>
-        <meta name="description" content="天亮金融">
+	    <title>双盈信息科技</title>
+        <meta name="description" content="双盈信息科技">
 	    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,700' rel='stylesheet' type='text/css'>
 	    <link href="../css/font-awesome.min.css" rel="stylesheet">
 	    <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
 		<div class="templatemo-content-widget templatemo-login-widget white-bg">
 			<header class="text-center">
 	          <div class="square"></div>
-	          <h1>&nbsp;天亮金融</h1>
+	          <h1>&nbsp;双盈信息科技</h1>
 	        </header>
 	        <form action="/submin_login" method="post" class="templatemo-login-form">
 	        	{{ csrf_field() }}

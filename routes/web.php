@@ -18,7 +18,7 @@
 
 // 管理员登录
 Route::get('/','SessionsController@create');
-Route::get('/login','SessionsController@create');
+Route::get('/login','SessionsController@create')->name('login');
 Route::post('/submin_login','SessionsController@store');
 Route::get('/logout','SessionsController@destroy');
 //后台首页

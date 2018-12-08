@@ -15,7 +15,11 @@ class SessionsController extends Controller
     //跳转登录页
     public function create()
 	{
-		auth()->logout();
+		//dd(auth()->check());
+		//auth()->logout();
+		if(auth()->check()){
+			return view('home');
+		}
 		return view('sessions.login');
 	}
 
