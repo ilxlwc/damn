@@ -24,7 +24,7 @@
 	          <div class="square"></div>
 	          <h1>&nbsp;天亮金融</h1>
 	        </header>
-	        <form action="/login" method="post" class="templatemo-login-form">
+	        <form action="/submin_login" method="post" class="templatemo-login-form">
 	        	{{ csrf_field() }}
 	        	<div class="form-group">
 	        		<div class="input-group">

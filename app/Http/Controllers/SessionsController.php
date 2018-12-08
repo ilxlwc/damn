@@ -33,9 +33,9 @@ class SessionsController extends Controller
 	public function destroy()
 	{
 	    auth()->logout();
-
+	    return view('sessions.login');
 	    //return redirect("login");
 	    // 生成重定向...
-		return redirect()->route('login');
+		//return redirect()->route('login');
 	}
 }
