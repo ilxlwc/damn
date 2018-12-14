@@ -1,6 +1,6 @@
 @extends('layouts.order_list')
-
 @section('checking_nav','active')
+@section('checking_order_top','active')
 
 @section('content')
 <!-- ////////////////////////////////////////////// -->
@@ -30,7 +30,7 @@
               <td>{{ $order->apply_amount }}</td>
               <td>{{ $order->agent_name }}</td>
               <td>{{ $order->prepare_amount }}</td>
-              <td><a href="/order_detail/{{ $order->id }}" class="templatemo-edit-btn">详情</a></td>
+              <td><a href="/order_detail/{{ $order->id }}?status=1" class="templatemo-edit-btn">详情</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotAgentModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">更换业务员</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#ignoreOrderModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">不受理</a></td>
             </tr>

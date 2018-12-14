@@ -15,6 +15,7 @@ class RouteController extends Controller
     //跳转首页
     public function home()
 	{
-		return view('home');
+		//return view('home');
+		return redirect()->home();
 	}
 }

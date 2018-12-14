@@ -3,7 +3,7 @@
 <link href="../css/swipebox.css" rel="stylesheet">
 <link href="../css/portfolio.css" rel="stylesheet">
 @endsection
-@section('checking_nav','active')
+
 
 @section('content')      
 <div class="templatemo-content-widget white-bg">
@@ -94,9 +94,11 @@
       @endforeach
       <div class="clearfix"> </div>
     </div> 
+     @if (Request::get('status') == 1)
     <div class="text-center">
       <button type="button" data-id="{{ $order->id }}" id="submitToFindingOrder" class="btn btn-success btn-lg">资料验证通过，进行寻款</button>
     </div>
+    @endif
   </div>
 </div>
 @endsection

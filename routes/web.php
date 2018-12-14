@@ -22,7 +22,7 @@ Route::get('/login','SessionsController@create')->name('login');
 Route::post('/submin_login','SessionsController@store');
 Route::get('/logout','SessionsController@destroy');
 //后台首页
-Route::get('/home','RouteController@home')->name('home');
+//Route::get('/home','RouteController@home')->name('home');
 // 管理员管理
 Route::get('/manage_admin','AdminController@admin_home');
 Route::post('/add_admin','AdminController@add_admin');
@@ -37,7 +37,7 @@ Route::post('/delete_agent_identity','MemberController@delete_agent_identity');
 Route::get('/manage_capital','MemberController@capital_home');
 Route::post('/delete_capital_identity','MemberController@delete_capital_identity');
 
-Route::get('/new_order','OrderController@new_order');
+Route::get('/new_order','OrderController@new_order')->name('home');
 Route::post('/ignore_order','OrderController@ignore_order');
 Route::post('/allot_agent_order','OrderController@allot_agent_order');
 
@@ -47,6 +47,10 @@ Route::post('/to_finding_order','OrderController@to_finding_order');
 
 
 Route::get('/finding_order','OrderController@finding_order');
-Route::get('/approved_order','OrderController@approved_order');
+Route::post('/allot_capital_order','OrderController@allot_capital_order');
 
+Route::get('/approved_order','OrderController@approved_order');
+Route::post('/repayments_detail','OrderController@repayments_detail');
+Route::post('/submit_repayment','OrderController@submit_repayment');
+Route::post('/set_repay_status','OrderController@set_repay_status');
 

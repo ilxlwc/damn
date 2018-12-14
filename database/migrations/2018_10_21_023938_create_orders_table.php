@@ -25,6 +25,7 @@ class CreateAppliesTable extends Migration
             $table->string('apply_amount')->nullable(); //申请金额（借贷者）
             $table->string('prepare_amount')->nullable();//准备贷款金额（业务员）
             $table->string('approve_amount')->nullable();//实批金额（管理员）
+            $table->integer('repay_status')->unsigned()->default(0);//还款状态（0:还款中,1:已还）
             $table->integer('status')->unsigned()->default(0);//该申请的处理状态（0:新订单，1:审核中， 2:寻款中，3:匹配中, 4:已批款）
             $table->string('service_type')->nullable();//业务类型
             $table->string('charge')->nullable();//收费

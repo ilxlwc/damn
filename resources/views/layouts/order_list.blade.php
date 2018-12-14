@@ -7,6 +7,7 @@
       @include('layouts.nav')      
       <!-- Main content --> 
       <div class="templatemo-content col-1 light-gray-bg">
+        @include('layouts.top')    
         <div class="templatemo-content-container">
           @yield('content')
         </div>

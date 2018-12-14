@@ -18,7 +18,8 @@ class SessionsController extends Controller
 		//dd(auth()->check());
 		//auth()->logout();
 		if(auth()->check()){
-			return view('home');
+			//return view('home');
+			 return redirect()->home();
 		}
 		return view('sessions.login');
 	}

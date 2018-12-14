@@ -1,6 +1,6 @@
 @extends('layouts.order_list')
-
 @section('neworder_nav','active')
+@section('new_order_top','active')
 
 @section('content')
 <!-- ////////////////////////////////////////////// -->

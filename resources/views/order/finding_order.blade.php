@@ -1,6 +1,7 @@
 @extends('layouts.order_list')
 
 @section('finding_nav','active')
+@section('finding_order_top','active')
 
 @section('content')
 <!-- ////////////////////////////////////////////// -->
@@ -30,8 +31,8 @@
               <td>{{ $order->apply_amount }}</td>
               <td>{{ $order->agent_name }}</td>
               <td>{{ $order->prepare_amount }}</td>
-              <td><a href="/order_detail/{{ $order->id }}" class="templatemo-edit-btn">详情</a></td>
-              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotCapitalModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">批款</a></td>
+              <td><a href="/order_detail/{{ $order->id }}?status=0" class="templatemo-edit-btn">详情</a></td>
+              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotCapitalModal" data-prepare_amount="{{ $order->prepare_amount }}" data-name="{{ $order->name }}" data-id="{{ $order->id }}">批款</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#ignoreOrderModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">不受理</a></td>
             </tr>
             @endforeach            
@@ -51,7 +52,7 @@
 @endsection
 
 @section('otherModel')
-<!-- 更改业务员模态框 -->
+<!-- 批款模态框 -->
 <div class="modal fade" id="allotCapitalModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -64,22 +65,25 @@
         <input type="hidden" id="allot_orderName" value="">
         <input type="hidden" id="allot_capitalId" value="">
         <input type="hidden" id="allot_capitalName" value="">
-        <input type="hidden" id="allot_capitalTel" value="">
+        <input type="hidden" id="allot_capitalTel" value="">       
+        <div id="agentInfo" class="alert alert-info" role="alert">
+          客户&nbsp;&nbsp;<span id="agent_name"></span>&nbsp;&nbsp;申请金额&nbsp;&nbsp;<span id="prepare_amount"></span>
+        </div> 
         <div id="allotAlert" class="hidden alert alert-success" role="alert"></div>
+        <div id="approve_amount_warning" class="hidden alert alert-danger" role="alert">请输入正确的批款金额 并 选定一个资金方</div>
         <form class="form-horizontal">
           <div class="form-group">
             <label for="approve_amount" class="col-sm-2 control-label">批款金额：</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" id="approve_amount">
-            </div>
+              <input type="text" id="approve_amount" class="form-control" >
+            </div>           
           </div>
         </form>
         <table class="table table-striped table-bordered templatemo-user-table">
           <thead>
             <tr>             
-              <td><a href="" class="white-text templatemo-sort-by">名字<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">资金方<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">电话<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">注册时间<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
             </tr>
           </thead>
@@ -88,16 +92,15 @@
             <tr>              
               <td>{{ $capital->name }}</td>
               <td>{{ $capital->tel }}</td>
-              <td>{{ $capital->created_at }}</td>
               <td>
-                <input class="allotSelected" type="radio" id="r{{ $capital->id }}" data-name="{{ $capital->name }}" data-tel="{{ $capital->tel }}" name="capital_id" value="{{ $capital->id }}" >
+                <input class="allotSelected" type="radio" id="{{ $capital->id }}" data-name="{{ $capital->name }}" data-tel="{{ $capital->tel }}" name="capital_id" value="{{ $capital->id }}" >
               </td>
             </tr>
             @endforeach            
           </tbody>
           <tfoot>
             <tr id="paging-margin">
-              <td colspan="5" class="text-center">{!! $capitals->render() !!}</td>
+              <td colspan="4" class="text-center">{!! $capitals->render() !!}</td>
             </tr>
           </tfoot>
         </table>
@@ -140,10 +143,11 @@ $('#approve_amount').on('blur',function(event){
   $('#allotAlert').html("用户 <strong >"+order_name+"</strong> 的申请的资金方为：<strong class='blue-text'>"+capital_name+"</strong>");
 });
 
-//指定业务员-》获取数据
+//批款-》获取数据
 $('#allotCapitalModal').on('show.bs.modal', function (event) {
   $(".allotSelected").removeAttr("checked");
   $('#allotAlert').addClass("hidden");
+  $('#approve_amount_warning').addClass("hidden");
   $('#allotAlert').html('');
   $('#allot_orderId').val('');
   $('#allot_orderName').val('');
@@ -151,10 +155,15 @@ $('#allotCapitalModal').on('show.bs.modal', function (event) {
   $('#allot_capitalName').val('');
   $('#allot_capitalTel').val('');
 
+  $('#agent_name').html('');
+  $('#prepare_amount').html('');
+
   var btnThis = $(event.relatedTarget); //触发事件的按钮
   var modal = $(this);  //当前模态框
   $('#allot_orderId').val(btnThis.attr('data-id'));
   $('#allot_orderName').val(btnThis.attr('data-name'));  
+  $('#agent_name').html(btnThis.attr('data-name'));
+  $('#prepare_amount').html(btnThis.attr('data-prepare_amount')); 
 });
 
 $('.allotSelected').on('click', function (event) {
@@ -162,7 +171,7 @@ $('.allotSelected').on('click', function (event) {
   var capital_id = $(this).val();
   var capital_name = $(this).attr('data-name');
   var capital_tel = $(this).attr('data-tel');
-  $('#allotAlert').html("用户 <strong >"+order_name+"</strong> 的申请的资金方为：<strong class='blue-text'>"+capital_name+"</strong>");
+  $('#allotAlert').html("为用户 <strong >"+order_name+"</strong> 的选定资金方为：<strong class='blue-text'>"+capital_name+"</strong>");
   $('#allotAlert').removeClass("hidden");
   $('#allot_capitalId').val(capital_id);
   $('#allot_capitalName').val(capital_name);
@@ -170,17 +179,22 @@ $('.allotSelected').on('click', function (event) {
 });
 
 //指定业务员-》提交数据
-$('#submitAllot').on('click', function () {
+$('#submitAllot').on('click', function () {  
+  var approve_amount = $('#approve_amount').val();
+  var capital_id = $('#allot_capitalId').val(); 
+  if(approve_amount.length == 0 || capital_id.length == 0){
+    $('#approve_amount_warning').removeClass("hidden");
+    return null;
+  }
   var order_id = $('#allot_orderId').val();
-  var order_name = $('#allot_orderName').val();
-  var capital_id = $('#allot_capitalId').val();
+  var order_name = $('#allot_orderName').val();  
   var capital_name = $('#allot_capitalName').val(); 
   var capital_tel = $('#allot_capitalTel').val(); 
   $('#allotCapitalModal').modal('hide');
   $.ajax({
     type:'post',
-    url:'/allot_agent_order',
-    data: {order_id : order_id, order_name : order_name, capital_id : capital_id, capital_name : capital_name, capital_tel : capital_tel, _token:"{{csrf_token()}}"},
+    url:'/allot_capital_order',
+    data: {order_id : order_id, order_name : order_name, capital_id : capital_id, capital_name : capital_name, capital_tel : capital_tel, approve_amount : approve_amount, _token:"{{csrf_token()}}"},
     success:function(data){
       $('#successAlert').html("已成功的为用户 <strong >"+data.order_name+"</strong> 分配了资金方： <strong class='blue-text'>"+data.capital_name+"</strong>" );
       $('#successAlert').removeClass("hidden");

@@ -16,7 +16,7 @@ class CreateRepaymentsTable extends Migration
         Schema::create('repayments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id')->unsigned();   //订单信息表ID
-            $table->timestamp('repay_date')->nullable();//还款时间
+            $table->string('repay_date')->nullable();//还款时间
             $table->string('repay_num')->nullable();//还款金额
             $table->integer('repay_status')->unsigned()->nullable();//还款状态（0:还款中,1:已还）
             $table->softDeletes();
