@@ -66,19 +66,32 @@
         <input type="hidden" id="allot_capitalId" value="">
         <input type="hidden" id="allot_capitalName" value="">
         <input type="hidden" id="allot_capitalTel" value="">       
+        <!--
         <div id="agentInfo" class="alert alert-info" role="alert">
           客户&nbsp;&nbsp;<span id="agent_name"></span>&nbsp;&nbsp;申请金额&nbsp;&nbsp;<span id="prepare_amount"></span>
-        </div> 
+        </div> -->
         <div id="allotAlert" class="hidden alert alert-success" role="alert"></div>
         <div id="approve_amount_warning" class="hidden alert alert-danger" role="alert">请输入正确的批款金额 并 选定一个资金方</div>
         <form class="form-horizontal">
           <div class="form-group">
             <label for="approve_amount" class="col-sm-2 control-label">批款金额：</label>
-            <div class="col-sm-10">
+            <div class="col-sm-3">
               <input type="text" id="approve_amount" class="form-control" >
-            </div>           
+            </div>
+            <label class="col-sm-1"></label>
+            <label for="repay_count" class="col-sm-2 control-label">还款期数：</label>
+            <div class="col-sm-2">
+              <input type="number" id="repay_count" class="form-control">
+            </div> 
+            <div class="col-sm-2">
+              <a id="set_repay_count" class="templatemo-edit-btn">确定</a>
+            </div>          
           </div>
         </form>
+        <hr/> 
+        <div id="repay_count_container">
+        </div>
+
         <table class="table table-striped table-bordered templatemo-user-table">
           <thead>
             <tr>             
@@ -104,7 +117,6 @@
             </tr>
           </tfoot>
         </table>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
@@ -178,14 +190,34 @@ $('.allotSelected').on('click', function (event) {
   $('#allot_capitalTel').val(capital_tel);
 });
 
-//指定业务员-》提交数据
+$('#set_repay_count').on('click', function (event) {
+   var repay_count = $('#repay_count').val();
+   //alert(repay_count);
+   var html='';
+   for(var i=0;i<repay_count; i++){
+    html += '<form class="form-horizontal"><div class="form-group">';
+    html += '<label class="col-sm-2 control-label">每期还款金额：</label>';
+    html += '<div class="col-sm-3"><input type="text" class="repay_num form-control"></div>';
+    html += '<label class="col-sm-2 control-label">还款时间：</label>';
+    html += '<div class="col-sm-3"><input type="date" class="repay_date form-control"></div>';
+    html += '</div></form>';
+   }
+   $('#repay_count_container').html(html);
+   return null;
+});
+
+//批款-》提交数据
 $('#submitAllot').on('click', function () {  
   var approve_amount = $('#approve_amount').val();
   var capital_id = $('#allot_capitalId').val(); 
-  if(approve_amount.length == 0 || capital_id.length == 0){
+  var repay_count = $('#repay_count').val();
+
+  if(approve_amount.length == 0 || capital_id.length == 0 || repay_count.length == 0){
     $('#approve_amount_warning').removeClass("hidden");
     return null;
   }
+  //获取每一条还款记录
+
   var order_id = $('#allot_orderId').val();
   var order_name = $('#allot_orderName').val();  
   var capital_name = $('#allot_capitalName').val(); 

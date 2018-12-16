@@ -38,6 +38,7 @@ class CreateAppliesTable extends Migration
             $table->char('gender',10)->nullable();//姓别（0：未知、1：男、2：女）
             $table->string('idcard')->nullable();//身份证号
             $table->string('tel')->nullable();//联系电话
+            $table->string('client_remark')->nullable();//客户备注信息
             $table->char('marital_status',10->nullable();//婚姻状况（未婚0、已婚1、离异2）
             $table->string('coborrower_relation')->nullable();//共借人关系
             $table->string('coborrower_name')->nullable();//共借人姓名

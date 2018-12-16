@@ -62,7 +62,7 @@ class OrderController extends Controller
     public function finding_order()
 	{
 		$orders = Order::latest()->where('status', 2)->paginate(10);
-		$capitals = Capital::latest()->paginate(10);
+		$capitals = Capital::latest()->paginate(5);
 		return view('order.finding_order',compact('orders','capitals'));
 	}
 
