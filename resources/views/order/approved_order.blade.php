@@ -72,26 +72,17 @@
         <input type="hidden" id="allot_orderName" value=""> 
         <div id="allotAlert" class="hidden alert alert-success" role="alert"></div>
         <div id="repay_num_warning" class="hidden alert alert-danger" role="alert">请输入还款金额 及 还款时间</div>
-        <form class="form-horizontal">
-          <div class="form-group">
-            <label for="repay_num" class="col-sm-2 control-label">还款金额：</label>
-            <div class="col-sm-4">
-              <input type="text" id="repay_num" class="form-control" >
-            </div> 
-            <label for="repay_date" class="col-sm-2 control-label">还款时间：</label>
-            <div class="col-sm-4">
-              <input type="date" id="repay_date" class="form-control" >
-            </div>         
-          </div>
-        </form>
+        <div class="alert alert-info" role="alert">
+          借款人：<strong id="order_name_info"></strong>； 资金方：<strong id="capital_name_info"></strong>； 总借金额：<strong id="approve_amount_info"></strong>
+        </div>        
         <table class="table table-striped table-bordered templatemo-user-table">
           <thead>
-            <tr>             
-              <td><a href="" class="white-text templatemo-sort-by">借款人<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">资金方<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">借款金额<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">还款金额<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">还款日期<span class="caret"></span></a></td>
+            <tr>
+              <td><a href="" class="white-text templatemo-sort-by">应还金额<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">应款日期<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">实还金额<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">实还日期<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
             </tr>
           </thead>
           <tbody id="repayments_detail">
@@ -100,13 +91,11 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
-        <button type="button" id="submitAllot" class="btn btn-primary">确定</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">关 闭</button>
       </div>
     </div>
   </div>
 </div>
-
 
 <!-- 完成还款模态框 -->
 <div class="modal fade" id="setRepayStatusModal" tabindex="-1" role="dialog">
@@ -140,17 +129,23 @@ $('#repayModal').on('show.bs.modal', function (event) {
   $('#allotAlert').html('');
   $('#allot_orderId').val('');
   $('#allot_orderName').val('');
-  $('#repay_num').val('');
-  $('#repay_date').val('');
+  $('#order_name_info').html('');
+  $('#capital_name_info').html('');
+  $('#approve_amount_info').html('');
+  $('#repayments_detail').html('');
 
   var btnThis = $(event.relatedTarget); //触发事件的按钮
   var modal = $(this);  //当前模态框
   var order_id = btnThis.attr('data-id');
-  var order_name = btnThis.attr('data-name');
-  $('#allot_orderId').val(order_id);
-  $('#allot_orderName').val(order_name); 
+  var order_name = btnThis.attr('data-name'); 
   var capital_name = btnThis.attr('data-capital_name');
   var approve_amount = btnThis.attr('data-approve_amount');
+  
+  $('#allot_orderId').val(order_id);
+  $('#allot_orderName').val(order_name); 
+  $('#order_name_info').html(order_name);
+  $('#capital_name_info').html(capital_name);
+  $('#approve_amount_info').html(approve_amount);
 
   $.ajax({
     type:'post',
@@ -161,7 +156,13 @@ $('#repayModal').on('show.bs.modal', function (event) {
       var html = "";     
       $.each(jsonarray, function (i, n) {
           //alert(n.repay_num);
-          html += "<tr><td>"+order_name+"</td><td>"+capital_name+"</td><td>"+approve_amount+"</td><td>"+n.repay_num+"</td><td>"+n.repay_date+"</td></tr>";
+          html += "<tr><td>"+n.repay_num+"</td><td>"+n.repay_date+"</td>";
+          if(n.status == 1){
+            html += "<td>"+n.repayed_num+"</td><td>"+n.repayed_date+"</td><td>已还</td>";
+          }else if(n.status == 0){
+            html += "<td><input type='text' class='repay_num form-control'></td><td><input type='date' class='repay_date form-control'></td><td><a data-id='"+n.id+"' onclick='submit_repay(this)' class='templatemo-edit-btn'>确定</a></td>";
+          }          
+          html += "</tr>";
       });
       $('#repayments_detail').html(html);
     }
@@ -170,28 +171,27 @@ $('#repayModal').on('show.bs.modal', function (event) {
 });
 
 //还款-》提交还款金额
-$('#submitAllot').on('click', function () {
-  var repay_num = $('#repay_num').val();
-  var repay_date = $('#repay_date').val();
-  if(repay_num.length == 0 || repay_date.length == 0){
+function submit_repay(obj){
+  var order_name = $('#allot_orderName').val(); 
+  var id = $(obj).attr("data-id");
+  var repayed_num = $(obj).closest("tr").find("input[type='text']").val();
+  var repayed_date = $(obj).closest("tr").find("input[type='date']").val();
+  if(repayed_num.length == 0 || repayed_date.length == 0){
     $('#repay_num_warning').removeClass("hidden");
     return null;
   }
-  var order_id = $('#allot_orderId').val();
-  var order_name = $('#allot_orderName').val(); 
   $('#repayModal').modal('hide');
   $.ajax({
     type:'post',
     url:'/submit_repayment',
-    data: {order_id : order_id, order_name : order_name, repay_num : repay_num, repay_date : repay_date, _token:"{{csrf_token()}}"},
-    success:function(data){
-      $('#successAlert').html("用户 <strong >"+data.order_name+"</strong> 已成功还款： <strong class='blue-text'>"+data.repay_num+"</strong>" );
+    data: {id : id, repayed_num : repayed_num, repayed_date : repayed_date, _token:"{{csrf_token()}}"},
+     success:function(data){
+      $('#successAlert').html("用户 <strong >"+order_name+"</strong> 已成功完成一笔还款： <strong class='blue-text'>"+data.repayed_num+"</strong>");
       $('#successAlert').removeClass("hidden");
       setTimeout(function() { $("#successAlert").addClass("hidden");}, 2000);
     }
   });
-
-});
+}
 
 //完成还款模态框-》获取数据
 $('#setRepayStatusModal').on('show.bs.modal', function (event) {

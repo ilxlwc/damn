@@ -27,7 +27,7 @@ class ApiController extends Controller
 		$order->idcard = request('idcard');
 		$order->apply_amount = request('apply_amount');
 		$order->client_remark = request('client_remark');
-		print($order);
+		//print($order);
 		$order->save();
 		//return response()->json($order, 200);
 		return 200;

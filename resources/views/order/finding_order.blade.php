@@ -71,7 +71,7 @@
           客户&nbsp;&nbsp;<span id="agent_name"></span>&nbsp;&nbsp;申请金额&nbsp;&nbsp;<span id="prepare_amount"></span>
         </div> -->
         <div id="allotAlert" class="hidden alert alert-success" role="alert"></div>
-        <div id="approve_amount_warning" class="hidden alert alert-danger" role="alert">请输入正确的批款金额 并 选定一个资金方</div>
+        <div id="approve_amount_warning" class="hidden alert alert-danger" role="alert">请输入正确的批款金额、还款期数 并 选定一个资金方</div>
         <form class="form-horizontal">
           <div class="form-group">
             <label for="approve_amount" class="col-sm-2 control-label">批款金额：</label>
@@ -167,6 +167,10 @@ $('#allotCapitalModal').on('show.bs.modal', function (event) {
   $('#allot_capitalName').val('');
   $('#allot_capitalTel').val('');
 
+  $('#approve_amount').val('');
+  $('#repay_count').val('');
+  $('#repay_count_container').html('');
+
   $('#agent_name').html('');
   $('#prepare_amount').html('');
 
@@ -207,26 +211,41 @@ $('#set_repay_count').on('click', function (event) {
 });
 
 //批款-》提交数据
-$('#submitAllot').on('click', function () {  
-  var approve_amount = $('#approve_amount').val();
-  var capital_id = $('#allot_capitalId').val(); 
-  var repay_count = $('#repay_count').val();
-
-  if(approve_amount.length == 0 || capital_id.length == 0 || repay_count.length == 0){
-    $('#approve_amount_warning').removeClass("hidden");
-    return null;
-  }
-  //获取每一条还款记录
-
+$('#submitAllot').on('click', function () {
   var order_id = $('#allot_orderId').val();
   var order_name = $('#allot_orderName').val();  
   var capital_name = $('#allot_capitalName').val(); 
   var capital_tel = $('#allot_capitalTel').val(); 
+  var approve_amount = $('#approve_amount').val();
+  var capital_id = $('#allot_capitalId').val(); 
+  var repay_count = $('#repay_count').val();
+  if(approve_amount.length == 0 || capital_id.length == 0 || repay_count.length == 0){
+    $('#approve_amount_warning').removeClass("hidden");
+    return null;
+  }
+  //获取每一条分期还款记录
+  var repaymentsArray=[];
+  var forms = $('#repay_count_container form').each(function(){
+    var repay_num = $(this).find("input:eq(0)").val();
+    var repay_date = $(this).find("input:eq(1)").val();
+    if(repay_num.length == 0 || repay_date.length == 0){
+      $('#approve_amount_warning').removeClass("hidden");
+      return null;
+    }
+    var repay = {};
+    repay["order_id"]=order_id;
+    repay["repay_num"]=repay_num;
+    repay["repay_date"]=repay_date;
+    repaymentsArray.push(repay);
+  });
+  var repayments = JSON.stringify(repaymentsArray);  
+  
+  //////////////////////  
   $('#allotCapitalModal').modal('hide');
   $.ajax({
     type:'post',
     url:'/allot_capital_order',
-    data: {order_id : order_id, order_name : order_name, capital_id : capital_id, capital_name : capital_name, capital_tel : capital_tel, approve_amount : approve_amount, _token:"{{csrf_token()}}"},
+    data: {order_id : order_id, order_name : order_name, capital_id : capital_id, capital_name : capital_name, capital_tel : capital_tel, approve_amount : approve_amount,repayments : repayments, _token:"{{csrf_token()}}"},
     success:function(data){
       $('#successAlert').html("已成功的为用户 <strong >"+data.order_name+"</strong> 分配了资金方： <strong class='blue-text'>"+data.capital_name+"</strong>" );
       $('#successAlert').removeClass("hidden");

@@ -18,7 +18,9 @@ class CreateRepaymentsTable extends Migration
             $table->integer('order_id')->unsigned();   //订单信息表ID
             $table->string('repay_date')->nullable();//还款时间
             $table->string('repay_num')->nullable();//还款金额
-            $table->integer('repay_status')->unsigned()->nullable();//还款状态（0:还款中,1:已还）
+            $table->integer('status')->unsigned()->default(0);//还款状态（0:没还,1:已还）
+            $table->string('repayed_date')->nullable();//实际还款时间
+            $table->string('repayed_num')->nullable();//实际还款金额
             $table->softDeletes();
             $table->timestamps();
 

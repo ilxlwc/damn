@@ -68,8 +68,17 @@ class OrderController extends Controller
 
 	public function allot_capital_order()
 	{
+		
 		Order::where('id', request('order_id'))
 		->update(['status' => 3, 'name' => request('order_name'), 'capital_id' => request('capital_id'), 'capital_name' => request('capital_name'), 'capital_tel' => request('capital_tel'), 'approve_amount' => request('approve_amount')]);
+		
+		$repayments = json_decode(request('repayments'),true);
+		foreach ($repayments as &$repay) {
+			$repay['created_at'] = date("Y-m-d H:i:s");
+			$repay['updated_at'] = date("Y-m-d H:i:s");
+		}
+		Repayment::insert($repayments);
+		
 		return response()->json(['order_name' => request('order_name'),
 			'capital_name' => request('capital_name'),], 200);
 	}
@@ -88,13 +97,10 @@ class OrderController extends Controller
 	
 	public function submit_repayment()
 	{
-		$repayment = new Repayment();
-		$repayment->order_id = request('order_id');
-		$repayment->repay_num = request('repay_num');
-		$repayment->repay_date = request('repay_date');
-		$repayment->save();
-		return response()->json(['order_name' => request('order_name'),
-			'repay_num' => request('repay_num'),], 200);
+		
+		Repayment::where('id', request('id'))
+		->update(['status' => 1, 'repayed_num' => request('repayed_num'), 'repayed_date' => request('repayed_date')]);
+		return response()->json(['repayed_num' => request('repayed_num'),], 200);
 	}
 
 	public function set_repay_status()
