@@ -33,7 +33,7 @@
               <td>{{ $order->prepare_amount }}</td>
               <td><a href="/order_detail/{{ $order->id }}?status=0" class="templatemo-edit-btn">详情</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotCapitalModal" data-prepare_amount="{{ $order->prepare_amount }}" data-name="{{ $order->name }}" data-id="{{ $order->id }}">批款</a></td>
-              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#ignoreOrderModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">不受理</a></td>
+              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#intentionOrderModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">意向资金方</a></td>
             </tr>
             @endforeach            
           </tbody>
@@ -127,22 +127,34 @@
 </div>
 
 
-<!-- 不受理订单模态框 -->
-<div class="modal fade" id="ignoreOrderModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sm" role="document">
+<!-- 对订单有意向的资金方模态框 -->
+<div class="modal fade" id="intentionOrderModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">操作提示</h4>
+        <h4 class="modal-title">意向资金方</h4>
       </div>
       <div class="modal-body">
         <input type="hidden" id="orderId" value="">
         <input type="hidden" id="orderName" value="">
-        <p>确认要将用户 <strong class="blue-text" id="comfirm_name"></strong> 的申请置为<strong class="blue-text">“不受理”</strong>吗？</p> 
+
+        <table class="table table-striped table-bordered templatemo-user-table">
+          <thead>
+            <tr>             
+              <td><a href="" class="white-text templatemo-sort-by">资金方<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">电话<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">邮箱<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">其它信息<span class="caret"></span></a></td>
+            </tr>
+          </thead>
+          <tbody id="intention_info_lists"> 
+                  
+          </tbody>         
+        </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
-        <button type="button" id="submitIgnore" class="btn btn-primary">确定</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">关 闭</button>
       </div>
     </div>
   </div>
@@ -254,29 +266,27 @@ $('#submitAllot').on('click', function () {
   });
 });
 
-//不受理订单-》获取数据
-$('#ignoreOrderModal').on('show.bs.modal', function (event) {
+//有意见向资金方-》获取数据
+$('#intentionOrderModal').on('show.bs.modal', function (event) {
+  $('#intention_info_lists').html("");
   var btnThis = $(event.relatedTarget); //触发事件的按钮
-  var modal = $(this);  //当前模态框
-  $('#orderId').val(btnThis.attr('data-id'));
-  $('#orderName').val(btnThis.attr('data-name'));  
-  $('#comfirm_name').text(btnThis.attr('data-name'));
-});
-//不受理订单-》提交数据
-$('#submitIgnore').on('click', function () {
-  var id = $('#orderId').val();
-  var name = $('#orderName').val();
-  $('#ignoreOrderModal').modal('hide');
+  var id = btnThis.attr('data-id');
+  var name = btnThis.attr('data-name');
+
   $.ajax({
     type:'post',
-    url:'/ignore_order',
-    data: {id : id, name : name, _token:"{{csrf_token()}}"},
+    url:'/get_order_intention',
+    data: {order_id : id, _token:"{{csrf_token()}}"},
     success:function(data){
-      $('#successAlert').html("用户 <strong>"+data.msg+"</strong> 的申请已置为不受理");
-      $('#successAlert').removeClass("hidden");
-      setTimeout(function() { $("#successAlert").addClass("hidden"); location.reload();}, 2000);
+      var jsonarray = eval(data); 
+      var html = "";     
+      $.each(jsonarray, function (i, n) {
+          html += "<tr><td>"+n.name+"</td><td>"+n.tel+"</td>";
+          html += "<td>"+n.email+"</td><td>"+n.other_info+"</td></tr>";
+      });
+      $('#intention_info_lists').html(html);
     }
-  });
-}); 
+    });
+});
 </script>
 @endsection

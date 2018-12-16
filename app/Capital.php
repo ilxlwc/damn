@@ -20,4 +20,12 @@ class Capital extends Model
 	{
 	    return $this->hasMany(\App\Order::class);
 	}
+
+     /**
+     * 获得资金方有意向的申请订单；1：n关系
+     */
+    public function intention()
+    {
+        return $this->hasMany(\App\Intention::class);
+    }
 }

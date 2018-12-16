@@ -48,6 +48,7 @@ Route::post('/to_finding_order','OrderController@to_finding_order');
 
 Route::get('/finding_order','OrderController@finding_order');
 Route::post('/allot_capital_order','OrderController@allot_capital_order');
+Route::post('/get_order_intention','OrderController@get_order_intention');
 
 Route::get('/approved_order','OrderController@approved_order');
 Route::post('/repayments_detail','OrderController@repayments_detail');

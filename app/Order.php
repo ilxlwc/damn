@@ -29,6 +29,14 @@ class Order extends Model
 	    return $this->hasMany(\App\Repayment::class);
 	}
 
+    /**
+     * 获得此申请的有意向的资金方；1：n关系
+     */
+    public function intention()
+    {
+        return $this->hasMany(\App\Intention::class);
+    }
+
 	 /**
      * 获得此申请表所属的客户信息。n:1
      */

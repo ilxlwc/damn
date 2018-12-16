@@ -19,9 +19,9 @@ class CreateAttachmentsTable extends Migration
             $table->string('url');//附件存储地址
             //附件类型
             //0:身份证图片,1:户口本图片,2:婚姻证明图片,3:征信记录图片,
-            //4:房产证图片,5:营业执照或工作证明,6:流水私发,7:评估截图,
+            //4:房产证图片,5:营业执照或工作证明,6:流水私发,7:评估截图,8：其它补充材料
             $table->integer('file_type')->unsigned();
-            $table->string('file_desc')->nullable();//附件存储地址
+            $table->string('file_desc')->nullable();//附件描述信息
             $table->softDeletes();
             $table->timestamps();
 

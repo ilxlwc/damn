@@ -9,6 +9,7 @@ use App\Agent;
 use App\Capital;
 use App\Attachment;
 use App\Repayment;
+use App\Intention;
 
 class OrderController extends Controller
 {
@@ -66,9 +67,15 @@ class OrderController extends Controller
 		return view('order.finding_order',compact('orders','capitals'));
 	}
 
-	public function allot_capital_order()
+	public function get_order_intention()
 	{
 		
+		$intentions = Intention::where('order_id', request('order_id'))->leftJoin('capitals', 'intentions.capital_id', '=', 'capitals.id')->select('intentions.*','capitals.name','capitals.tel')->get();		
+		return response()->json($intentions, 200);
+	}
+
+	public function allot_capital_order()
+	{
 		Order::where('id', request('order_id'))
 		->update(['status' => 3, 'name' => request('order_name'), 'capital_id' => request('capital_id'), 'capital_name' => request('capital_name'), 'capital_tel' => request('capital_tel'), 'approve_amount' => request('approve_amount')]);
 		
@@ -86,7 +93,7 @@ class OrderController extends Controller
     public function approved_order()
 	{
 		$orders = Order::latest()->where('status', 3)->paginate(10);		
-		return view('order.approved_order',compact('orders','repayments'));
+		return view('order.approved_order',compact('orders'));
 	}
 
 	public function repayments_detail()
@@ -96,8 +103,7 @@ class OrderController extends Controller
 	}
 	
 	public function submit_repayment()
-	{
-		
+	{		
 		Repayment::where('id', request('id'))
 		->update(['status' => 1, 'repayed_num' => request('repayed_num'), 'repayed_date' => request('repayed_date')]);
 		return response()->json(['repayed_num' => request('repayed_num'),], 200);
