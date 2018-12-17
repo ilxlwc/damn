@@ -9,17 +9,14 @@ class SessionsController extends Controller
     
 	public function __construct()
 	{
-	    $this->middleware('guest')->except(['destroy']);
+	    //$this->middleware('guest')->except(['destroy']);
 	}
 	
     //跳转登录页
     public function create()
 	{
-		//dd(auth()->check());
-		//auth()->logout();
 		if(auth()->check()){
-			//return view('home');
-			 return redirect()->home();
+			auth()->logout();
 		}
 		return view('sessions.login');
 	}
