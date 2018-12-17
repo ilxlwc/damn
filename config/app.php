@@ -150,7 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Iwanli\Wxxcx\WxxcxServiceProvider::class,
         /*
          * Application Service Providers...
          */

@@ -17,6 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//用户登录
+Route::post('getWxUserInfo', 'WxxcxController@getWxUserInfo');
+
 //借款申请
 Route::post('apply_order', 'ApiController@apply_order');
 //个人借款申请信息

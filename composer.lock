@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5bca48e56bbf3a25645858fcab9c285",
+    "content-hash": "f1e8e229f1fcf307a2a4bbe602bb5b12",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -365,6 +365,43 @@
                 "trusted proxy"
             ],
             "time": "2018-02-07T20:20:57+00:00"
+        },
+        {
+            "name": "iwanli/wxxcx",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lanceWan/wxxcx.git",
+                "reference": "c6a1c4a62ac5028f99245fa5bcb4d6a8fbddc655"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lanceWan/wxxcx/zipball/c6a1c4a62ac5028f99245fa5bcb4d6a8fbddc655",
+                "reference": "c6a1c4a62ac5028f99245fa5bcb4d6a8fbddc655",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Iwanli\\Wxxcx\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "晚黎",
+                    "email": "ibanya@126.com"
+                }
+            ],
+            "description": "A WeChat applet (xiaochengxu) plugins for Laravel 5.",
+            "time": "2017-06-08T03:13:33+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
