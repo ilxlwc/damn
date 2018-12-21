@@ -29,6 +29,8 @@ Route::get('client_repayments/{client_id}', 'ApiController@client_repayments');
 Route::get('agent_orders/{agent_id}', 'ApiController@agent_orders');
 //业务员提交订单信息
 Route::post('update_orders', 'ApiController@update_orders');
+//文件上传接口
+Route::post('upload_image', 'ApiController@upload_image');
 
 //申请汇总
 Route::get('approved_orders', 'ApiController@approved_orders');
