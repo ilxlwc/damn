@@ -32,7 +32,8 @@ class WxxcxController extends Controller
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         //$userInfo = $this->wxxcx->getLoginInfo($code);
 
-        $userInfo = json_decode($this->wxxcx->getUserInfo($encryptedData, $iv));
+        //$userInfo = json_decode($this->wxxcx->getUserInfo($encryptedData, $iv));
+        $userInfo = $this->wxxcx->getUserInfo($encryptedData, $iv);
         $openid = $userInfo['openid'];
         
 
