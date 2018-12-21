@@ -34,7 +34,6 @@ class WxxcxController extends Controller
 
         $userInfo = json_decode($this->wxxcx->getUserInfo($encryptedData, $iv));
         $openid = $userInfo['openid'];
-
         
 
         if($userId = Client::select('id')->where('openId', $openid)->first();){ //当前登录的是借款人
@@ -62,7 +61,6 @@ class WxxcxController extends Controller
             $client->save();
 
             $userInfo['userId'] = $client->id;
-
         }
 
         return response()->json($userInfo, 200);

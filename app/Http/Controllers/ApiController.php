@@ -94,7 +94,8 @@ class ApiController extends Controller
             if($bool){
                 $img_path = '/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
                 $data = [
-                    'domain_img_path'=>get_domain().$img_path,
+                    //'domain_img_path'=>get_domain().$img_path,
+                    'domain_img_path'=>$img_path,
                     'img_path'=>$img_path,
                 ];
                 return response()->json(succ($data));
