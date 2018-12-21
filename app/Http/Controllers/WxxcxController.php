@@ -36,7 +36,7 @@ class WxxcxController extends Controller
         $openid = $userInfo['openid'];
         
 
-        if($userId = Client::select('id')->where('openId', $openid)->first();){ //当前登录的是借款人
+        if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
             $userInfo['status'] = 0;
             $userInfo['userId'] = $userId;
         }

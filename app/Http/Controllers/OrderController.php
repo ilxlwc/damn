@@ -20,7 +20,7 @@ class OrderController extends Controller
 	}
 
     public function new_order()
-	{		
+	{
 		$clients = Client::select('clients.name', 'clients.tel','orders.id','orders.apply_amount','orders.created_at')->leftJoin('orders','clients.id','=','orders.client_id')->where('status', 0)->paginate(10);
 		$agents = Agent::latest()->paginate(10);
 		return view('order.new_order',compact('clients','agents'));

@@ -93,11 +93,11 @@ class ApiController extends Controller
             $bool =  $file->move($path,$file_name);
             if($bool){
                 $img_path = '/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
-                $data = [
-                    //'domain_img_path'=>get_domain().$img_path,
-                    'domain_img_path'=>$img_path,
-                    'img_path'=>$img_path,
-                ];
+                // $data = [
+                //     //'domain_img_path'=>get_domain().$img_path,
+                //     'domain_img_path'=>$img_path,
+                //     'img_path'=>$img_path,
+                // ];
                 return response()->json($img_path, 200);
             }else{
                 return response()->json("图片上传失败！", 400);
