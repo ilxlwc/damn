@@ -98,7 +98,7 @@ class ApiController extends Controller
                     'domain_img_path'=>$img_path,
                     'img_path'=>$img_path,
                 ];
-                return response()->json($data, 200);
+                return response()->json($img_path, 200);
             }else{
                 return response()->json("图片上传失败！", 400);
             }
