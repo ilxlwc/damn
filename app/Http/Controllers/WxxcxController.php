@@ -36,10 +36,10 @@ class WxxcxController extends Controller
         //return $this->wxxcx->getUserInfo($encryptedData, $iv);        
 
         $userInfo = $this->wxxcx->getUserInfo($encryptedData, $iv);
-        //print($userInfo);
-        $openid = $userInfo->openId;
-        print($openid);
-
+        tt($userInfo);
+       // $openid = $userInfo->openId;
+       // print($openid);
+/*
         if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
             $userInfo['status'] = 0;
             $userInfo['userId'] = $userId;
@@ -68,7 +68,7 @@ class WxxcxController extends Controller
         }
 
         return response()->json($userInfo, 200);
-
+*/
         //获取解密后的用户信息
         //return $this->wxxcx->getUserInfo($encryptedData, $iv);
     }
