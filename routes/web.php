@@ -43,7 +43,11 @@ Route::post('/allot_agent_order','OrderController@allot_agent_order');
 
 Route::get('/checking_order','OrderController@checking_order');
 Route::get('/order_detail/{id}','OrderController@order_detail');
+Route::get('/change_order_detail/{id}','OrderController@change_order_detail');
+Route::post('/sumbit_change_order','OrderController@sumbit_change_order');
 Route::post('/to_finding_order','OrderController@to_finding_order');
+Route::post('/delete_attachment_order','OrderController@delete_attachment_order');
+Route::post('/upload_attachment','OrderController@upload_attachment');
 
 
 Route::get('/finding_order','OrderController@finding_order');

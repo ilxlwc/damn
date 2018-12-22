@@ -21,6 +21,7 @@
               <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
+              <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
             </tr>
           </thead>
           <tbody>
@@ -31,6 +32,7 @@
               <td>{{ $order->agent_name }}</td>
               <td>{{ $order->prepare_amount }}</td>
               <td><a href="/order_detail/{{ $order->id }}?status=1" class="templatemo-edit-btn">详情</a></td>
+              <td><a href="/change_order_detail/{{ $order->id }}" class="templatemo-edit-btn">更改资料</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotAgentModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">更换业务员</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#ignoreOrderModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">不受理</a></td>
             </tr>

@@ -54,10 +54,89 @@ class OrderController extends Controller
 		return view('order.order_detail', compact('order','attachments'));
 	}
 
+	public function change_order_detail($id)
+	{
+		$order = Order::findOrFail($id);
+		$attachments = Attachment::where('order_id', $id)->orderBy('file_desc')->get();
+		return view('order.change_order_detail', compact('order','attachments'));
+	}
+
+	public function sumbit_change_order()
+	{
+		Order::where('id', request('id'))->update([request('key') => request('value')]);	
+		return response()->json(['msg' => '提交成功'], 200);
+	}
+
 	public function to_finding_order()
 	{
 		Order::where('id', request('id'))->update(['status' => 2]);	
 		return response()->json(['msg' => '提交成功'], 200);
+	}
+
+	public function delete_attachment_order()
+	{
+		$attachment = Attachment::find(request('id'));
+		if($attachment->delete()){
+		    return response()->json(['msg' => '删除成功！'], 200);
+		}else{
+		    return response()->json(['msg' => '删除失败！'], 400);
+		}		
+	}
+
+	public function upload_attachment(Request $request)
+	{
+		$img_path = null;
+    	if ($request->isMethod('POST')) 
+    	{
+    		$file = $request->file('fileToUpload');
+    		if ($file->isValid()) 
+    		{    			
+    			$ext = $file->getClientOriginalExtension();
+    			$file_name = date("YmdHis",time()).'-'.uniqid().".".$ext;//保存的文件名
+	            if(!in_array($ext,['jpg','jpeg','gif','png']) ) return response()->json(err('文件类型不是图片'));
+	            //把临时文件移动到指定的位置，并重命名
+	            $path = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
+	            $bool =  $file->move($path,$file_name);
+	            if($bool){
+	                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
+	            }
+        	}
+       	}
+
+       	if($img_path){
+       		$file_type = request('file_type');
+       		$file_desc = "其它补充材料";
+       		switch ($file_type)
+			{
+				case 0:
+				  $file_desc = "身份证"; break;  
+				case 1:
+				  $file_desc = "户口本"; break;
+				case 2:
+				  $file_desc = "婚姻证明"; break;
+				case 3:
+				  $file_desc = "征信记录"; break;
+				case 4:
+				  $file_desc = "房产证"; break;
+				case 5:
+				  $file_desc = "营业执照或工作"; break;
+				case 6:
+				  $file_desc = "流水私发"; break;
+				case 7:
+				  $file_desc = "评估截图"; break;
+				default:
+				  $file_desc = "其它补充材料";
+			}
+       		$attachment = new Attachment();
+			$attachment->order_id = request('order_id');
+			$attachment->url = $img_path;
+			$attachment->file_type = $file_type;
+			$attachment->file_desc = $file_desc;
+			$attachment->save();
+       		return 200;
+       	}else{
+            	return response()->json("图片上传失败！", 400);
+       	}
 	}
 
     public function finding_order()

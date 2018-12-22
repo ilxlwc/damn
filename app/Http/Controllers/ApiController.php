@@ -48,9 +48,9 @@ class ApiController extends Controller
 
 	public function update_orders(Request $request)
 	{
-		$data = $request->all();
+		//$data = $request->all();
 		
-		//$data = json_decode(request('data'), true);
+		$data = json_decode(request('data'), true);
 		$id = $data[0]['id'];
 		$prepare_amount = $data[0]['prepare_amount'];
 		$service_type = $data[0]['service_type'];
@@ -102,7 +102,7 @@ class ApiController extends Controller
             $path = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
             $bool =  $file->move($path,$file_name);
             if($bool){
-                $img_path = '/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
+                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
                 // $data = [
                 //     //'domain_img_path'=>get_domain().$img_path,
                 //     'domain_img_path'=>$img_path,
