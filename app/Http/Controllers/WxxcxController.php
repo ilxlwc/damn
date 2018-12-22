@@ -36,7 +36,7 @@ class WxxcxController extends Controller
         //return $this->wxxcx->getUserInfo($encryptedData, $iv);        
 
         $userInfo = $this->wxxcx->getUserInfo($encryptedData, $iv);
-        tt($userInfo);
+        print_r($userInfo);
        // $openid = $userInfo->openId;
        // print($openid);
 /*
