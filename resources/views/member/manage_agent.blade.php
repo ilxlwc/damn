@@ -17,7 +17,6 @@
               <td><a href="" class="white-text templatemo-sort-by">名字<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">电话<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">微信名<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">注册时间<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">操作<span class="caret"></span></a></td>
             </tr>
           </thead>
@@ -27,14 +26,13 @@
               <td>{{ $agent->name }}</td>
               <td>{{ $agent->tel }}</td>
               <td>{{ $agent->nickName }}</td>
-              <td>{{ $agent->created_at }}</td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#changeIdentityModal" data-identity="借贷人" data-name="{{ $agent->name }}" data-id="{{ $agent->id }}">删除该成员</a></td>
             </tr>
             @endforeach            
           </tbody>
           <tfoot>
             <tr id="paging-margin">
-              <td colspan="5" class="text-center">{!! $agents->render() !!}</td>              
+              <td colspan="4" class="text-center">{!! $agents->render() !!}</td>              
             </tr>
           </tfoot>
         </table>    

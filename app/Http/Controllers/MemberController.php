@@ -42,12 +42,13 @@ class MemberController extends Controller
 		$this->validate(request(),[
 			'id' => 'required',
 	        'name' => 'required',
+	        'tel' => 'required',
 	        'identity' => 'required',
 	    ]);
 		$client = Client::findorfail(request('id'));
 		$data =   [
-            'name' => $client['name'],
-            'tel' => $client['tel'],
+            'name' => request('name'),
+            'tel' => request('tel'),
             'openId' => $client['openId'],
             'nickName' => $client['nickName'],
             'gender' => $client['gender'],
@@ -61,14 +62,14 @@ class MemberController extends Controller
 	    if(request('identity') == 1){//变更身份为业务员
 	    	//查看软删除中是否有此条记录
 	        $agent = Agent::withTrashed()
-	        	->where([['name', '=', $client['name']],['tel', '=', $client['tel']],])
+	        	->where('openId', $client['openId'])
 	        	->restore();
 	        if($agent <= 0){
 	    		Agent::create($data);
 	    	}
 	    }else if(request('identity') == 2){
 	    	$capital = Capital::withTrashed()
-	        	->where([['name', '=', $client['name']],['tel', '=', $client['tel']],])
+	        	->where('openId', $client['openId'])
 	        	->restore();
 	        if($capital <= 0){
 	    		Capital::create($data);
@@ -88,10 +89,7 @@ class MemberController extends Controller
 		$agent = Agent::findorfail(request('id'));
 		//查看软删除中是否有此条记录
         $client = Client::withTrashed()
-        ->where([
-				    ['name', '=', $agent['name']],
-				    ['tel', '=', $agent['tel']],			    
-				])
+        ->where('openId', $agent['openId'])
         ->restore();
         if($client <= 0){
         	$data = [
@@ -120,8 +118,7 @@ class MemberController extends Controller
 		$capital = Capital::findorfail(request('id'));
 		//查看软删除中是否有此条记录
         $client = Client::withTrashed()
-	        ->where([['name', '=', $capital['name']],
-					    ['tel', '=', $capital['tel']],])
+	        ->where('openId', $capital['openId'])
 	        ->restore();
         if($client <= 0){
         	$data = [
