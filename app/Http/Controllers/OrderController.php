@@ -21,7 +21,7 @@ class OrderController extends Controller
 
     public function new_order()
 	{
-		$clients = Order::select('id','name','tel','apply_amount','created_at')->where('status', 0)->paginate(10);
+		$clients = Order::latest()->select('id','name','tel','apply_amount','created_at')->where('status', 0)->paginate(10);
 		$agents = Agent::latest()->paginate(10);
 		return view('order.new_order',compact('clients','agents'));
 	}
