@@ -40,15 +40,15 @@ class WxxcxController extends Controller
 
         if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
             $data['status'] = 0;
-            $data['userId'] = $userId;
+            $data['userId'] = $userId['id'];
         }
         else if($userId = Agent::select('id')->where('openId', $openid)->first()){ //当前登录的是业务人
             $data['status'] = 1;
-            $data['userId'] = $userId;
+            $data['userId'] = $userId['id'];
         }
         else if($userId = Capital::select('id')->where('openId', $openid)->first()){ //当前登录的是资金人
             $data['status'] = 2;
-            $data['userId'] = $userId;
+            $data['userId'] = $userId['id'];
         }else{
             $data['status'] = 0;
 
