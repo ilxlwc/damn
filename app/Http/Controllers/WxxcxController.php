@@ -33,11 +33,11 @@ class WxxcxController extends Controller
         //$userInfo = $this->wxxcx->getLoginInfo($code);
 
         //$userInfo = json_decode($this->wxxcx->getUserInfo($encryptedData, $iv));
-        //return $this->wxxcx->getUserInfo($encryptedData, $iv);        
+        return $this->wxxcx->getUserInfo($encryptedData, $iv);        
 
-        $userInfo = $this->wxxcx->getUserInfo($encryptedData, $iv);
+        //$infos = $this->wxxcx->getUserInfo($encryptedData, $iv);
         //var_dump($userInfo);
-        return response()->json($userInfo, 200);
+        //return response()->json($infos, 200);
        // $openid = $userInfo->openId;
        // print($openid);
 /*
