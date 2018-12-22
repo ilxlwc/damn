@@ -36,7 +36,9 @@ class WxxcxController extends Controller
         //return $this->wxxcx->getUserInfo($encryptedData, $iv);        
 
         $userInfo = $this->wxxcx->getUserInfo($encryptedData, $iv);
-        $openid = $userInfo['openId'];
+        //print($userInfo);
+        $openid = $userInfo->openId;
+        print($openid);
 
         if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
             $userInfo['status'] = 0;
