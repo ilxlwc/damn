@@ -89,7 +89,8 @@ class ApiController extends Controller
 		}
 		Attachment::insert($data[1]);
 		
-		return response()->json("信息提交成功", 200);
+		return 200;
+		//return response()->json("信息提交成功", 200);
 	}
 
 	public function upload_image(Request $request)
