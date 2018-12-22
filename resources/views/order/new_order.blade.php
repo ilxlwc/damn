@@ -112,11 +112,11 @@
         <input type="hidden" id="orderId" value="">
         <input type="hidden" id="orderName" value="">
         <p>确认要将用户 <strong class="blue-text" id="comfirm_name"></strong> 的申请置为<strong class="blue-text">“不受理”</strong>吗？</p> 
-        <p><strong class="red-text">（注：点击确实后将删除该申请）</strong></p>
+        <p><strong class="red-text">（注：点击确定后将删除该申请）</strong></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
-        <button type="button" id="submitIgnore" class="btn btn-primary">确定</button>
+        <button type="button" id="submitIgnore" class="btn btn-primary">确 定</button>
       </div>
     </div>
   </div>

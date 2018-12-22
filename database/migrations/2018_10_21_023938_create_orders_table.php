@@ -47,7 +47,7 @@ class CreateAppliesTable extends Migration
             $table->string('coborrower_tel')->nullable();//共借人联系电话
             $table->char('credit_record',10)->nullable();//信用记录是否空白（0：空白，1：非空白）
             $table->char('credit_record_status',10)->nullable();//信用记录是否包含止付，冻结，杂帐（0：不包含，1包含）
-            $table->char('overdue',10)->nullable();//当前是否逾期（0：没逾期，1：逾期）
+            $table->string('overdue')->nullable();//当前是否逾期（0：没逾期，1：逾期）
             $table->string('house_type')->nullable();//房产类型
             $table->string('house_owner')->nullable();//产权人
             $table->char('owner_type',20)->nullable();//单独或共同拥有（0：未知，1单独拥有，2共同拥有）

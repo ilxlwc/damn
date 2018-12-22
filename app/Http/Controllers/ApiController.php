@@ -112,10 +112,10 @@ class ApiController extends Controller
                 // ];
                 return response()->json($img_path, 200);
             }else{
-                return response()->json("图片上传失败！", 400);
+                return 400;
             }
         }else{
-            return response()->json("图片上传失败！", 400);
+            return 400;
         }
 	}
 
