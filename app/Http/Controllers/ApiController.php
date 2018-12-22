@@ -50,7 +50,8 @@ class ApiController extends Controller
 	{
 		//$data = $request->all();
 		
-		$data = json_decode(request('data'), true);
+		//$data = json_decode(request('data'), true);
+		$data = request('data');
 		$id = $data[0]['id'];
 		$prepare_amount = $data[0]['prepare_amount'];
 		$service_type = $data[0]['service_type'];
