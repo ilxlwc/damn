@@ -48,37 +48,47 @@ class ApiController extends Controller
 
 	public function update_orders(Request $request)
 	{
-		$id = request('id');
-		$prepare_amount = request('prepare_amount');
-		$service_type = request('service_type');
-		$charge = request('charge');
-		$returnfee = request('returnfee');
-		$assess_source = request('assess_source');
-		$assess_unit_price = request('assess_unit_price');
-		$assess_gross_amount = request('assess_gross_amount');
-		$name = request('name');
-		$age = request('age');
-		$gender = request('gender');
-		$idcard = request('idcard');
-		$tel = request('tel');
-		$marital_status = request('marital_status');
-		$coborrower_name = request('coborrower_name');
-		$coborrower_gender = request('coborrower_gender');
-		$coborrower_relation = request('coborrower_relation');
-		$coborrower_idcard = request('coborrower_idcard');
-		$coborrower_tel = request('coborrower_tel');
-		$credit_record = request('credit_record');
-		$credit_record_status = request('credit_record_status');
-		$overdue = request('overdue');
-		$house_type = request('house_type');
-		$house_owner_certificate = request('house_owner_certificate');
-		$owner_type = request('owner_type');
-		$house_address = request('house_address');
+		$data = $request->all();
+		
+		//$data = json_decode(request('data'), true);
+		$id = $data[0]['id'];
+		$prepare_amount = $data[0]['prepare_amount'];
+		$service_type = $data[0]['service_type'];
+		$charge = $data[0]['charge'];
+		$returnfee = $data[0]['returnfee'];
+		$assess_source = $data[0]['assess_source'];
+		$assess_unit_price = $data[0]['assess_unit_price'];
+		$assess_gross_amount = $data[0]['assess_gross_amount'];
+		$name = $data[0]['name'];
+		$age = $data[0]['age'];
+		$gender = $data[0]['gender'];
+		$idcard = $data[0]['idcard'];
+		$tel = $data[0]['tel'];
+		$marital_status = $data[0]['marital_status'];
+		$coborrower_name = $data[0]['coborrower_name'];
+		$coborrower_gender = $data[0]['coborrower_gender'];
+		$coborrower_relation = $data[0]['coborrower_relation'];
+		$coborrower_idcard = $data[0]['coborrower_idcard'];
+		$coborrower_tel = $data[0]['coborrower_tel'];
+		$credit_record = $data[0]['credit_record'];
+		$credit_record_status = $data[0]['credit_record_status'];
+		$overdue = $data[0]['overdue'];
+		$house_type = $data[0]['house_type'];
+		$house_owner_certificate = $data[0]['house_owner_certificate'];
+		$owner_type = $data[0]['owner_type'];
+		$house_address = $data[0]['house_address'];
 
 		Order::where('id', $id)
 		->update(['prepare_amount' => $prepare_amount, 'service_type' => $service_type, 'charge' => $charge, 'returnfee' => $returnfee, 'assess_source' => $assess_source, 'assess_unit_price' => $assess_unit_price, 'assess_gross_amount' => $assess_gross_amount, 'name' => $name, 'age' => $age, 'gender' => $gender, 'idcard' => $idcard, 'tel' => $tel, 'marital_status' => $marital_status, 'coborrower_name' => $coborrower_name, 'coborrower_gender' => $coborrower_gender, 'coborrower_relation' => $coborrower_relation, 'coborrower_idcard' => $coborrower_idcard, 'coborrower_tel' => $coborrower_tel, 'credit_record' => $credit_record, 'credit_record_status' => $credit_record_status, 'overdue' => $overdue, 'house_type' => $house_type, 'house_owner_certificate' => $house_owner_certificate, 'owner_type' => $owner_type, 'house_address' => $house_address]);
 
-		return response()->json($orders, 200);
+		
+		foreach ($data[1] as &$attachments) {
+			$attachments['created_at'] = date("Y-m-d H:i:s");
+			$attachments['updated_at'] = date("Y-m-d H:i:s");
+		}
+		Attachment::insert($data[1]);
+		
+		return response()->json("信息提交成功", 200);
 	}
 
 	public function upload_image(Request $request)
