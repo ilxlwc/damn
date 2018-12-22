@@ -36,8 +36,8 @@ class WxxcxController extends Controller
 
         $infos = $this->wxxcx->getUserInfo($encryptedData, $iv);
         //var_dump($userInfo);
-        return response()->json($infos, 200);
-       // $openid = $userInfo->openId;
+        $openid = $infos->openId;
+        return response()->json($openid, 200);
        // print($openid);
 /*
         if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
