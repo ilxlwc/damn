@@ -36,40 +36,37 @@ class WxxcxController extends Controller
 
         $infos = $this->wxxcx->getUserInfo($encryptedData, $iv);
         $data = json_decode($infos, true);
-        //var_dump($userInfo);
         $openid = $data["openId"];
-        return response()->json($openid, 200);
-       // print($openid);
-/*
+
         if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
-            $userInfo['status'] = 0;
-            $userInfo['userId'] = $userId;
+            $data['status'] = 0;
+            $data['userId'] = $userId;
         }
         else if($userId = Agent::select('id')->where('openId', $openid)->first()){ //当前登录的是业务人
-            $userInfo['status'] = 1;
-            $userInfo['userId'] = $userId;
+            $data['status'] = 1;
+            $data['userId'] = $userId;
         }
         else if($userId = Capital::select('id')->where('openId', $openid)->first()){ //当前登录的是资金人
-            $userInfo['status'] = 2;
-            $userInfo['userId'] = $userId;
+            $data['status'] = 2;
+            $data['userId'] = $userId;
         }else{
-            $userInfo['status'] = 0;
+            $data['status'] = 0;
 
             $client = new Client();
-            $client->avatarUrl = $userInfo['avatarUrl'];
-            $client->city = $userInfo['city'];
-            $client->province = $userInfo['province'];
-            $client->country = $userInfo['country'];
-            $client->gender = $userInfo['gender'];
-            $client->nickName = $userInfo['nickName'];
-            $client->openId = $userInfo['openId'];
+            $client->avatarUrl = $data['avatarUrl'];
+            $client->city = $data['city'];
+            $client->province = $data['province'];
+            $client->country = $data['country'];
+            $client->gender = $data['gender'];
+            $client->nickName = $data['nickName'];
+            $client->openId = $data['openId'];
             $client->save();
 
-            $userInfo['userId'] = $client->id;
+            $data['userId'] = $client->id;
         }
 
-        return response()->json($userInfo, 200);
-*/
+        return response()->json($data, 200);
+
         //获取解密后的用户信息
         //return $this->wxxcx->getUserInfo($encryptedData, $iv);
     }
