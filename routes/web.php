@@ -37,6 +37,8 @@ Route::post('/delete_agent_identity','MemberController@delete_agent_identity');
 Route::get('/manage_capital','MemberController@capital_home');
 Route::post('/delete_capital_identity','MemberController@delete_capital_identity');
 
+Route::get('/manage_introduction','IntroductionController@manage_introduction');
+
 Route::get('/new_order','OrderController@new_order')->name('home');
 Route::post('/ignore_order','OrderController@ignore_order');
 Route::post('/allot_agent_order','OrderController@allot_agent_order');

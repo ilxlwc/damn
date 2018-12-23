@@ -5,6 +5,7 @@
         <li><a href="/manage_client" class="@yield('client_top','')">借贷人</a></li>
         <li><a href="/manage_agent" class="@yield('agent_top','')">业务员</a></li>
         <li><a href="/manage_capital" class="@yield('capital_top','')">资金方</a></li>
+        <li><a href="/manage_introduction" class="@yield('introduction_top','')">公司介绍</a></li>
         @if (Auth::check() && Auth::user()->name == 'admin')
         <li><a href="/manage_admin" class="@yield('admin_top','')">管理员</a></li>
         @endif
