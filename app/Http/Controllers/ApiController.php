@@ -32,6 +32,44 @@ class ApiController extends Controller
 		return 200;
 	}
 
+	public function getUserInfo()
+	{
+		$userId = request('userId'); //userId 就是那个相对应的client_id 或 agent_id 或 capital_id
+		$status = request('status'); //status=0:普通用户; status=1:业务员; status=2:资金方
+
+		if($status == 0){
+			$userInfos = Client::select('id','name','tel')->where('id', $userId)->get();
+			return response()->json($userInfos, 200);
+		}else if($status == 1){
+			$userInfos = Agent::select('id','name','tel')->where('id', $userId)->get();
+			return response()->json($userInfos, 200);
+		}else if($status == 2){
+			$userInfos = Capital::select('id','name','tel')->where('id', $userId)->get();
+			return response()->json($userInfos, 200);
+		}
+		return response()->json(['msg' => '获取信息错误'], 400);
+	}
+
+	public function changeUserInfo()
+	{
+		$userId = request('userId'); //userId 就是那个相对应的client_id 或 agent_id 或 capital_id
+		$status = request('status'); //status=0:普通用户; status=1:业务员; status=2:资金方 
+		$name = request('name');
+		$tel = request('tel');
+
+		if($status == 0){
+			Client::where('id', $userId)->update(['name' => $name, 'tel' => $tel]);	
+			return response()->json(['msg' => '更新成功'], 200);
+		}else if($status == 1){
+			Agent::where('id', $userId)->update(['name' => $name, 'tel' => $tel]);	
+			return response()->json(['msg' => '更新成功'], 200);
+		}else if($status == 2){
+			Capital::where('id', $userId)->update(['name' => $name, 'tel' => $tel]);	
+			return response()->json(['msg' => '更新成功'], 200);
+		}	
+		return response()->json(['msg' => '更新失败'], 400);
+	}
+
 	public function client_repayments($client_id)
 	{
 		$order_id = Order::select('id')->where(['status' => 3,'client_id'=> $client_id])->get();
@@ -49,10 +87,12 @@ class ApiController extends Controller
 	public function update_orders(Request $request)
 	{
 		//$data = $request->all();
-		
 		//$data = json_decode(request('data'), true);
+		
 		$data = request('data');
 		$id = $data[0]['id'];
+		$agent_id = $data[0]['agent_id']; ///////////////////新加
+
 		$prepare_amount = $data[0]['prepare_amount'];
 		$service_type = $data[0]['service_type'];
 		$charge = $data[0]['charge'];
@@ -79,15 +119,59 @@ class ApiController extends Controller
 		$owner_type = $data[0]['owner_type'];
 		$house_address = $data[0]['house_address'];
 
-		Order::where('id', $id)
-		->update(['prepare_amount' => $prepare_amount, 'service_type' => $service_type, 'charge' => $charge, 'returnfee' => $returnfee, 'assess_source' => $assess_source, 'assess_unit_price' => $assess_unit_price, 'assess_gross_amount' => $assess_gross_amount, 'name' => $name, 'age' => $age, 'gender' => $gender, 'idcard' => $idcard, 'tel' => $tel, 'marital_status' => $marital_status, 'coborrower_name' => $coborrower_name, 'coborrower_gender' => $coborrower_gender, 'coborrower_relation' => $coborrower_relation, 'coborrower_idcard' => $coborrower_idcard, 'coborrower_tel' => $coborrower_tel, 'credit_record' => $credit_record, 'credit_record_status' => $credit_record_status, 'overdue' => $overdue, 'house_type' => $house_type, 'house_owner_certificate' => $house_owner_certificate, 'owner_type' => $owner_type, 'house_address' => $house_address]);
+		if($id){
+			Order::where('id', $id)->update(['prepare_amount' => $prepare_amount, 'service_type' => $service_type, 'charge' => $charge, 'returnfee' => $returnfee, 'assess_source' => $assess_source, 'assess_unit_price' => $assess_unit_price, 'assess_gross_amount' => $assess_gross_amount, 'name' => $name, 'age' => $age, 'gender' => $gender, 'idcard' => $idcard, 'tel' => $tel, 'marital_status' => $marital_status, 'coborrower_name' => $coborrower_name, 'coborrower_gender' => $coborrower_gender, 'coborrower_relation' => $coborrower_relation, 'coborrower_idcard' => $coborrower_idcard, 'coborrower_tel' => $coborrower_tel, 'credit_record' => $credit_record, 'credit_record_status' => $credit_record_status, 'overdue' => $overdue, 'house_type' => $house_type, 'house_owner_certificate' => $house_owner_certificate, 'owner_type' => $owner_type, 'house_address' => $house_address]);
 
-		
-		foreach ($data[1] as &$attachments) {
-			$attachments['created_at'] = date("Y-m-d H:i:s");
-			$attachments['updated_at'] = date("Y-m-d H:i:s");
+				foreach ($data[1] as &$attachments) {
+					$attachments['created_at'] = date("Y-m-d H:i:s");
+					$attachments['updated_at'] = date("Y-m-d H:i:s");
+				}
+				Attachment::insert($data[1]);
+		}else{
+			
+			$client = Client::select('id')->where('tel', $tel)->first();
+			$agent = Agent::select('id','name','tel')->where('id', $agent_id)->first();
+
+			$order = new Order();
+			$order->client_id = $client['id'];
+			$order->agent_id = $agent['id'];
+			$order->agent_name = $agent['name'];
+			$order->agent_tel = $agent['tel'];
+			$order->prepare_amount = $prepare_amount;
+			$order->service_type = $service_type;
+			$order->charge = $charge;
+			$order->returnfee = $returnfee;
+			$order->assess_source = $assess_source;
+			$order->assess_unit_price = $assess_unit_price;
+			$order->assess_gross_amount = $assess_gross_amount;
+			$order->name = $name;
+			$order->age = $age;
+			$order->gender = $gender;
+			$order->idcard = $idcard;
+			$order->tel = $tel;
+			$order->marital_status = $marital_status;
+			$order->coborrower_name = $coborrower_name;
+			$order->coborrower_gender = $coborrower_gender;
+			$order->coborrower_relation = $coborrower_relation;
+			$order->coborrower_idcard = $coborrower_idcard;
+			$order->coborrower_tel = $coborrower_tel;
+			$order->credit_record = $credit_record;
+			$order->credit_record_status = $credit_record_status;
+			$order->house_type = $house_type;
+			$order->house_owner_certificate = $house_owner_certificate;
+			$order->owner_type = $owner_type;
+			$order->house_address = $house_address;
+
+			$order->save();
+
+			$order_id = $order->id;
+			foreach ($data[1] as &$attachments) {
+				$attachments['order_id'] = $order_id;
+				$attachments['created_at'] = date("Y-m-d H:i:s");
+				$attachments['updated_at'] = date("Y-m-d H:i:s");
+			}
+			Attachment::insert($data[1]);
 		}
-		Attachment::insert($data[1]);
 		
 		return 200;
 		//return response()->json("信息提交成功", 200);
@@ -134,7 +218,7 @@ class ApiController extends Controller
 	public function order_detail($id)
 	{
 		$order = Order::findOrFail($id);
-		$attachments = Attachment::where('order_id', $id)->orderBy('file_desc')->get();
+		$attachments = Attachment::where('order_id', $id)->orderBy('file_type')->get();
 		return response()->json([$order, $attachments], 200);
 	}
 }

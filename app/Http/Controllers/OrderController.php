@@ -135,7 +135,7 @@ class OrderController extends Controller
 			$attachment->save();
        		return 200;
        	}else{
-            	return response()->json("图片上传失败！", 400);
+            return response()->json("图片上传失败！", 400);
        	}
 	}
 
