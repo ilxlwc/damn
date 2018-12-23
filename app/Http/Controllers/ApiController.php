@@ -231,7 +231,7 @@ class ApiController extends Controller
 
 	public function get_intro_pic()
 	{
-		$pics = Introduction::latest()->select('id', 'pic')->where('item_type', 1)->limit(2)->get();
+		$pics = Introduction::latest()->select('id', 'pic')->where('item_type', 1)->get();
 		return response()->json($pics, 200);
 	}
 }
