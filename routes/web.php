@@ -38,6 +38,11 @@ Route::get('/manage_capital','MemberController@capital_home');
 Route::post('/delete_capital_identity','MemberController@delete_capital_identity');
 
 Route::get('/manage_introduction','IntroductionController@manage_introduction');
+Route::post('/update_intro_desc','IntroductionController@update_intro_desc');
+Route::post('/update_intro_others','IntroductionController@update_intro_others');
+Route::post('/delete_intro_pic','IntroductionController@delete_intro_pic');
+Route::post('/upload_intro_pic','IntroductionController@upload_intro_pic');
+
 
 Route::get('/new_order','OrderController@new_order')->name('home');
 Route::post('/ignore_order','OrderController@ignore_order');

@@ -238,13 +238,13 @@ $('#submitChange').on('click', function () {
   });
 });
 
-//更改信息-》获取数据
+//删除附件-》获取数据
 $('#submitDeleteModal').on('show.bs.modal', function (event) {
   var btnThis = $(event.relatedTarget); //触发事件的按钮
   $('#attachmentId').val(btnThis.attr('data-id')); 
 });
 
-//更改信息-》提交数据
+//删除附件-》提交数据
 $('#submitDelete').on('click', function () {
   var id = $('#attachmentId').val();
   $('#attachmentId').val('');

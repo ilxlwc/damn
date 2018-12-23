@@ -9,6 +9,7 @@ use App\Agent;
 use App\Capital;
 use App\Attachment;
 use App\Repayment;
+use App\Introduction;
 
 class ApiController extends Controller
 {
@@ -220,5 +221,17 @@ class ApiController extends Controller
 		$order = Order::findOrFail($id);
 		$attachments = Attachment::where('order_id', $id)->orderBy('file_type')->get();
 		return response()->json([$order, $attachments], 200);
+	}
+
+	public function get_introduction()
+	{
+		$introduction = Introduction::select('desc', 'tel', 'addr', 'linkman', 'email')->where('id', 1)->first();
+		return response()->json($introduction, 200);
+	}
+
+	public function get_intro_pic()
+	{
+		$pics = Introduction::latest()->select('id', 'pic')->where('item_type', 1)->limit(2)->get();
+		return response()->json($pics, 200);
 	}
 }

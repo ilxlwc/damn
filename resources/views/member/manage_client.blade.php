@@ -33,7 +33,7 @@
           </tbody>
           <tfoot>
             <tr id="paging-margin">
-              <td colspan="6" class="text-center">{!! $clients->render() !!}</td>              
+              <td colspan="6" class="text-center">{!! $clients->render() !!}</td>
             </tr>
           </tfoot>
         </table>    

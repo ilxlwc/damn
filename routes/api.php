@@ -44,3 +44,7 @@ Route::get('capital_orders/{capital_id}', 'ApiController@capital_orders');
 
 //资料查看展示
 Route::get('order_detail/{id}', 'ApiController@order_detail');
+
+//得到公司基本信息
+Route::get('get_introduction', 'ApiController@get_introduction');
+Route::get('get_intro_pic', 'ApiController@get_intro_pic');

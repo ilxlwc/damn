@@ -93,7 +93,7 @@ class OrderController extends Controller
     		{    			
     			$ext = $file->getClientOriginalExtension();
     			$file_name = date("YmdHis",time()).'-'.uniqid().".".$ext;//保存的文件名
-	            if(!in_array($ext,['jpg','jpeg','gif','png']) ) return response()->json(err('文件类型不是图片'));
+	            if(!in_array($ext,['jpg','jpeg','gif','png']) ) return response()->json(['msg' => '文件类型不是图片'], 400);
 	            //把临时文件移动到指定的位置，并重命名
 	            $path = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
 	            $bool =  $file->move($path,$file_name);
@@ -135,7 +135,7 @@ class OrderController extends Controller
 			$attachment->save();
        		return 200;
        	}else{
-            return response()->json("图片上传失败！", 400);
+            return response()->json(['msg' => '图片上传失败！'], 400);
        	}
 	}
 
