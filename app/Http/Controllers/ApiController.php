@@ -128,9 +128,11 @@ class ApiController extends Controller
 					$attachments['updated_at'] = date("Y-m-d H:i:s");
 				}
 				Attachment::insert($data[1]);
-		}else{
-			
+		}else{			
 			$client = Client::select('id')->where('tel', $tel)->first();
+			if($client['id']){
+				return response()->json(['msg' => '提交的电话不存在'], 400);
+			}
 			$agent = Agent::select('id','name','tel')->where('id', $agent_id)->first();
 
 			$order = new Order();
