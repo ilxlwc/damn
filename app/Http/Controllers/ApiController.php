@@ -116,12 +116,13 @@ class ApiController extends Controller
 		$credit_record_status = $data[0]['credit_record_status'];
 		$overdue = $data[0]['overdue'];
 		$house_type = $data[0]['house_type'];
+		$house_owner = $data[0]['house_owner'];  /////////////
 		$house_owner_certificate = $data[0]['house_owner_certificate'];
 		$owner_type = $data[0]['owner_type'];
 		$house_address = $data[0]['house_address'];
 
 		if($id){
-			Order::where('id', $id)->update(['status' => 1, 'prepare_amount' => $prepare_amount, 'service_type' => $service_type, 'charge' => $charge, 'returnfee' => $returnfee, 'assess_source' => $assess_source, 'assess_unit_price' => $assess_unit_price, 'assess_gross_amount' => $assess_gross_amount, 'name' => $name, 'age' => $age, 'gender' => $gender, 'idcard' => $idcard, 'tel' => $tel, 'marital_status' => $marital_status, 'coborrower_name' => $coborrower_name, 'coborrower_gender' => $coborrower_gender, 'coborrower_relation' => $coborrower_relation, 'coborrower_idcard' => $coborrower_idcard, 'coborrower_tel' => $coborrower_tel, 'credit_record' => $credit_record, 'credit_record_status' => $credit_record_status, 'overdue' => $overdue, 'house_type' => $house_type, 'house_owner_certificate' => $house_owner_certificate, 'owner_type' => $owner_type, 'house_address' => $house_address]);
+			Order::where('id', $id)->update(['status' => 1, 'prepare_amount' => $prepare_amount, 'service_type' => $service_type, 'charge' => $charge, 'returnfee' => $returnfee, 'assess_source' => $assess_source, 'assess_unit_price' => $assess_unit_price, 'assess_gross_amount' => $assess_gross_amount, 'name' => $name, 'age' => $age, 'gender' => $gender, 'idcard' => $idcard, 'tel' => $tel, 'marital_status' => $marital_status, 'coborrower_name' => $coborrower_name, 'coborrower_gender' => $coborrower_gender, 'coborrower_relation' => $coborrower_relation, 'coborrower_idcard' => $coborrower_idcard, 'coborrower_tel' => $coborrower_tel, 'credit_record' => $credit_record, 'credit_record_status' => $credit_record_status, 'overdue' => $overdue,'house_owner' => $house_owner, 'house_type' => $house_type, 'house_owner_certificate' => $house_owner_certificate, 'owner_type' => $owner_type, 'house_address' => $house_address]);
 
 				foreach ($data[1] as &$attachments) {
 					$attachments['created_at'] = date("Y-m-d H:i:s");
@@ -133,7 +134,7 @@ class ApiController extends Controller
 			if(!$client['id']){
 				return response()->json(['msg' => '提交的电话不存在'], 400);
 			}
-			
+
 			$agent = Agent::select('id','name','tel')->where('id', $agent_id)->first();
 
 			$order = new Order();

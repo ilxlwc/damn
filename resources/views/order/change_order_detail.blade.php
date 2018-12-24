@@ -39,24 +39,62 @@
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>姓名：</label><span class="blue-text" id="name">{{ $order->name }}</span>&nbsp;<i data-key="name" data-value="{{ $order->name }}" data-keytext="姓名：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>年龄：</label><span class="blue-text" id="age">{{ $order->age }}</span>&nbsp;<i data-key="age" data-value="{{ $order->age }}" data-keytext="年龄：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
-        <div class="col-1"><label>姓别：</label><span class="blue-text" id="gender">{{ $order->gender }}</span>&nbsp;<i data-key="gender" data-value="{{ $order->gender }}" data-keytext="姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        <div class="col-1"><label>姓别：</label><span class="blue-text" id="gender">
+          @if ($order->gender == 0)
+              未知
+            @elseif ($order->gender == 1)
+              男
+            @elseif ($order->gender == 2)
+              女
+            @else
+              {{ $order->gender }}
+            @endif
+        </span>&nbsp;<i data-key="gender" data-value="{{ $order->gender }}" data-keytext="姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div>
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>身份证号：</label><span class="blue-text" id="idcard">{{ $order->idcard }}</span>&nbsp;<i data-key="idcard" data-value="{{ $order->idcard }}" data-keytext="身份证号：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>联系电话：</label><span class="blue-text" id="tel">{{ $order->tel }}</span>&nbsp;<i data-key="tel" data-value="{{ $order->tel }}" data-keytext="联系电话：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
-        <div class="col-1"><label>婚姻状况：</label><span class="blue-text" id="marital_status">{{ $order->marital_status }}</span>&nbsp;<i data-key="marital_status" data-value="{{ $order->marital_status }}" data-keytext="婚姻状况：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        <div class="col-1"><label>婚姻状况：</label><span class="blue-text" id="marital_status">
+          @if ($order->marital_status == 0)
+              未婚
+            @elseif ($order->marital_status == 1)
+              已婚
+            @elseif ($order->marital_status == 2)
+              离异
+            @else
+              {{ $order->marital_status }}
+            @endif
+        </span>&nbsp;<i data-key="marital_status" data-value="{{ $order->marital_status }}" data-keytext="婚姻状况：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div><hr/>
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>共借人关系：</label><span class="blue-text" id="coborrower_relation">{{ $order->coborrower_relation }}</span>&nbsp;<i data-key="coborrower_relation" data-value="{{ $order->coborrower_relation }}" data-keytext="共借人关系：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>共借人姓名：</label><span class="blue-text" id="coborrower_name">{{ $order->coborrower_name }}</span>&nbsp;<i data-key="coborrower_name" data-value="{{ $order->coborrower_name }}" data-keytext="共借人姓名：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
-        <div class="col-1"><label>共借人姓别：</label><span class="blue-text" id="coborrower_gender">{{ $order->coborrower_gender }}</span>&nbsp;<i data-key="coborrower_gender" data-value="{{ $order->coborrower_gender }}" data-keytext="共借人姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        <div class="col-1"><label>共借人姓别：</label><span class="blue-text" id="coborrower_gender">
+           @if ($order->coborrower_gender == 0)
+              未知
+            @elseif ($order->coborrower_gender == 1)
+              男
+            @elseif ($order->coborrower_gender == 2)
+              女
+            @else
+              {{ $order->coborrower_gender }}
+            @endif
+        </span>&nbsp;<i data-key="coborrower_gender" data-value="{{ $order->coborrower_gender }}" data-keytext="共借人姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div>
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>共借人身份证号：</label><span class="blue-text" id="coborrower_idcard">{{ $order->coborrower_idcard }}</span>&nbsp;<i data-key="coborrower_idcard" data-value="{{ $order->coborrower_idcard }}" data-keytext="共借人身份证号：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>共借人联系电话：</label><span class="blue-text" id="coborrower_tel">{{ $order->coborrower_tel }}</span>&nbsp;<i data-key="coborrower_tel" data-value="{{ $order->coborrower_tel }}" data-keytext="共借人联系电话：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div><hr/>
       <div class="templatemo-flex-row flex-content-row">
-        <div class="col-1"><label>信用记录是否空白：</label><span class="blue-text" id="credit_record">{{ $order->credit_record }}</span>&nbsp;<i data-key="credit_record" data-value="{{ $order->credit_record }}" data-keytext="信用记录是否空白：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        <div class="col-1"><label>信用记录是否空白：</label><span class="blue-text" id="credit_record">
+           @if ($order->credit_record == 0)
+              空白
+            @elseif ($order->credit_record == 1)
+              非空白
+            @else
+              {{ $order->credit_record }}
+            @endif
+        </span>&nbsp;<i data-key="credit_record" data-value="{{ $order->credit_record }}" data-keytext="信用记录是否空白：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>是否包含止付，冻结，杂帐：</label><span class="blue-text" id="credit_record_status">{{ $order->credit_record_status }}</span>&nbsp;<i data-key="credit_record_status" data-value="{{ $order->credit_record_status }}" data-keytext="是否包含止付，冻结，杂帐：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>当前是否逾期：</label><span class="blue-text" id="overdue">{{ $order->overdue }}</span>&nbsp;<i data-key="overdue" data-value="{{ $order->overdue }}" data-keytext="当前是否逾期：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div>
