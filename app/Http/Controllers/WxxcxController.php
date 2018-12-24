@@ -37,24 +37,30 @@ class WxxcxController extends Controller
         $infos = $this->wxxcx->getUserInfo($encryptedData, $iv);
         $data = json_decode($infos, true);
         $openid = $data["openId"];
+        $data['oldUser'] = 0;//老用户
 
-        if($userId = Client::select('id')->where('openId', $openid)->first()){ //当前登录的是借款人
+        if($userId = Client::select('id','tel')->where('openId', $openid)->first()){ //当前登录的是借款人
             $data['status'] = 0;
-            $data['oldUser'] = 1;//老用户
+            if($userId['tel']){
+                $data['oldUser'] = 1;//老用户
+            }
             $data['userId'] = $userId['id'];
         }
-        else if($userId = Agent::select('id')->where('openId', $openid)->first()){ //当前登录的是业务人
+        else if($userId = Agent::select('id','tel')->where('openId', $openid)->first()){ //当前登录的是业务人
             $data['status'] = 1;
-             $data['oldUser'] = 1;//老用户
+            if($userId['tel']){
+                $data['oldUser'] = 1;//老用户
+            }
             $data['userId'] = $userId['id'];
         }
-        else if($userId = Capital::select('id')->where('openId', $openid)->first()){ //当前登录的是资金人
+        else if($userId = Capital::select('id','tel')->where('openId', $openid)->first()){ //当前登录的是资金人
             $data['status'] = 2;
-            $data['oldUser'] = 1;//老用户
+            if($userId['tel']){
+                $data['oldUser'] = 1;//老用户
+            }
             $data['userId'] = $userId['id'];
         }else{
             $data['status'] = 0;
-            $data['oldUser'] = 0;//新用户
 
             $client = new Client();
             $client->avatarUrl = $data['avatarUrl'];
