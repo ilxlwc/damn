@@ -57,7 +57,7 @@
         <input type="hidden" id="agentId" value="">
         <input type="hidden" id="agentName" value="">
         <p>确认要将用户<strong class="blue-text" id="comfirm_name"></strong>删除吗？</p>        
-        <p>删除后，该用户的身份将变更成"借贷人"</p>
+        <p>删除后，该用户的身份将变更成<strong class="blue-text">"借贷人"</strong></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>

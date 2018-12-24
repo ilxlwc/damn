@@ -42,13 +42,12 @@ class MemberController extends Controller
 		$this->validate(request(),[
 			'id' => 'required',
 	        'name' => 'required',
-	        'tel' => 'required',
 	        'identity' => 'required',
 	    ]);
 		$client = Client::findorfail(request('id'));
 		$data =   [
-            'name' => request('name'),
-            'tel' => request('tel'),
+            'name' => $client['name'],
+            'tel' => $client['tel'],
             'openId' => $client['openId'],
             'nickName' => $client['nickName'],
             'gender' => $client['gender'],

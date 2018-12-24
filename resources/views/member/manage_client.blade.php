@@ -48,14 +48,18 @@
 @section('otherModel')
 <!-- 删除用户模态框 -->
 <div class="modal fade" id="changeIdentityModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">操作提示</h4>
       </div>
       <div class="modal-body">
-        <div class="alert alert-success" role="alert">将微信名为<strong class="blue-text" id="comfirm_name"></strong>用户变成<strong class="blue-text" id="comfirm_type"></strong></div>
+        <div class="alert alert-success" role="alert">将用户<strong class="blue-text" id="comfirm_name"></strong>变成<strong class="blue-text" id="comfirm_type"></strong></div>
+        <input type="hidden" id="clientId" value="">
+        <input type="hidden" id="name" value="">
+        <input type="hidden" id="memberIdentity" value="">
+       <!--
         <div id="approve_warning" class="hidden alert alert-danger" role="alert">请输入名字、 电话</div>
         <input type="hidden" id="clientId" value="">
         <input type="hidden" id="nickName" value="">
@@ -72,7 +76,7 @@
               <input type="text" id="tel" class="form-control">
             </div>         
           </div>
-        </form>
+        </form> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
@@ -86,6 +90,48 @@
 @section('javascript')
 <script type="text/javascript">
 //更改用户信息-》获取数据
+$('#changeIdentityModal').on('show.bs.modal', function (event) {
+  var btnThis = $(event.relatedTarget); //触发事件的按钮
+  var name = btnThis.attr('data-name');
+  var nickName = btnThis.attr('data-nickName');
+  $('#clientId').val(btnThis.attr('data-id'));
+  $('#name').val(name);
+  var identity=0;
+  if(btnThis.attr('data-identity') == '业务员')
+    identity = 1;
+  else if(btnThis.attr('data-identity') == '资金方')
+    identity = 2;
+  $('#memberIdentity').val(identity);
+
+  $('#comfirm_name').text(name);
+  if(name.length == 0){
+    $('#comfirm_name').text(nickName);
+  }
+  $('#comfirm_type').text(btnThis.attr('data-identity'));
+});
+
+$('#submitChangeIdentity').on('click', function () {
+  var id = $('#clientId').val();
+  var name = $('#name').val();
+  var identity = $('#memberIdentity').val();
+  $('#clientId').val('');
+  $('#name').val('');
+  $('#memberIdentity').val('');
+  $('#changeIdentityModal').modal('hide');
+  $.ajax({
+    type:'post',
+    url:'/change_client_identity',
+    data: {id : id, name : name, identity : identity, _token:"{{csrf_token()}}"},
+    success:function(data){
+      $('#successAlert').html("用户<strong>"+data.msg+"</strong>的身份已变更完成");
+      $('#successAlert').removeClass("hidden");
+      setTimeout(function() { $("#successAlert").addClass("hidden"); location.reload();}, 2000);
+    }
+  });
+});
+
+//更改用户信息-》获取数据
+/*
 $('#changeIdentityModal').on('show.bs.modal', function (event) {
   var btnThis = $(event.relatedTarget); //触发事件的按钮
   var name = btnThis.attr('data-name');
@@ -133,5 +179,6 @@ $('#submitChangeIdentity').on('click', function () {
     }
   });
 });
+*/
 </script>
 @endsection
