@@ -28,7 +28,6 @@ class ApiController extends Controller
 		$order->idcard = request('idcard');
 		$order->apply_amount = request('apply_amount');
 		$order->client_remark = request('client_remark');
-		//print($order);
 		$order->save();
 		//return response()->json($order, 200);
 		return 200;
@@ -82,7 +81,7 @@ class ApiController extends Controller
 
 	public function agent_orders($agent_id)
 	{
-		$orders = Order::select('id','client_id','status','updated_at')->where([['status','<>','4'],['agent_id','=',$agent_id]])->get();
+		$orders = Order::select('id','client_id','name','tel','status','updated_at')->where([['status','<>','4'],['agent_id','=',$agent_id]])->get();
 		return response()->json($orders, 200);
 	}
 
