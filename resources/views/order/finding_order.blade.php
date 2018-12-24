@@ -145,7 +145,8 @@
               <td><a href="" class="white-text templatemo-sort-by">资金方<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">电话<span class="caret"></span></a></td>
               <td><a href="" class="white-text templatemo-sort-by">邮箱<span class="caret"></span></a></td>
-              <td><a href="" class="white-text templatemo-sort-by">其它信息<span class="caret"></span></a></td>
+              <!--
+              <td><a href="" class="white-text templatemo-sort-by">其它信息<span class="caret"></span></a></td> -->
             </tr>
           </thead>
           <tbody id="intention_info_lists"> 
@@ -282,7 +283,8 @@ $('#intentionOrderModal').on('show.bs.modal', function (event) {
       var html = "";     
       $.each(jsonarray, function (i, n) {
           html += "<tr><td>"+n.name+"</td><td>"+n.tel+"</td>";
-          html += "<td>"+n.email+"</td><td>"+n.other_info+"</td></tr>";
+          html += "<td>"+n.email+"</td></tr>";
+          //html += "<td>"+n.email+"</td><td>"+n.other_info+"</td></tr>";
       });
       $('#intention_info_lists').html(html);
     }
