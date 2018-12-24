@@ -9,6 +9,7 @@ use App\Agent;
 use App\Capital;
 use App\Attachment;
 use App\Repayment;
+use App\Intention;
 use App\Introduction;
 
 class ApiController extends Controller
@@ -164,7 +165,9 @@ class ApiController extends Controller
 			$order->coborrower_tel = $coborrower_tel;
 			$order->credit_record = $credit_record;
 			$order->credit_record_status = $credit_record_status;
+			$order->overdue = $overdue;
 			$order->house_type = $house_type;
+			$order->house_owner = $house_owner;
 			$order->house_owner_certificate = $house_owner_certificate;
 			$order->owner_type = $owner_type;
 			$order->house_address = $house_address;
@@ -227,6 +230,16 @@ class ApiController extends Controller
 		$order = Order::findOrFail($id);
 		$attachments = Attachment::where('order_id', $id)->orderBy('file_type')->get();
 		return response()->json([$order, $attachments], 200);
+	}
+
+	public function order_intention()
+	{
+		$intention = new Intention();
+		$intention->order_id = request('order_id');
+		$intention->capital_id = request('capital_id');
+		$intention->email = request('email');
+		$intention->save();
+		return 200;
 	}
 
 	public function get_introduction()

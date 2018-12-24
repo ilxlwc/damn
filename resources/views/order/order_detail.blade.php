@@ -95,7 +95,17 @@
               {{ $order->credit_record }}
             @endif
           </span></div>
-        <div class="col-1"><label>是否包含止付，冻结，呆帐：</label><span class="blue-text">{{ $order->credit_record_status }}</span></div>
+        <div class="col-1"><label>是否包含止付，冻结，呆帐：</label><span class="blue-text">
+          @if ($order->credit_record_status == 0)
+              止付
+            @elseif ($order->credit_record_status == 1)
+              冻结
+            @elseif ($order->credit_record_status == 2)
+              杂帐
+            @else
+              {{ $order->credit_record_status }}
+            @endif
+        </span></div>
         <div class="col-1"><label>逾期记录：</label><span class="blue-text">{{ $order->overdue }}</span></div>
       </div>
     </div> 

@@ -95,7 +95,17 @@
               {{ $order->credit_record }}
             @endif
         </span>&nbsp;<i data-key="credit_record" data-value="{{ $order->credit_record }}" data-keytext="信用记录是否空白：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
-        <div class="col-1"><label>是否包含止付，冻结，杂帐：</label><span class="blue-text" id="credit_record_status">{{ $order->credit_record_status }}</span>&nbsp;<i data-key="credit_record_status" data-value="{{ $order->credit_record_status }}" data-keytext="是否包含止付，冻结，杂帐：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        <div class="col-1"><label>止付，冻结，杂帐：</label><span class="blue-text" id="credit_record_status">
+           @if ($order->credit_record_status == 0)
+              止付
+            @elseif ($order->credit_record_status == 1)
+              冻结
+            @elseif ($order->credit_record_status == 2)
+              杂帐
+            @else
+              {{ $order->credit_record_status }}
+            @endif
+        </span>&nbsp;<i data-key="credit_record_status" data-value="{{ $order->credit_record_status }}" data-keytext="是否包含止付，冻结，杂帐：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
         <div class="col-1"><label>当前是否逾期：</label><span class="blue-text" id="overdue">{{ $order->overdue }}</span>&nbsp;<i data-key="overdue" data-value="{{ $order->overdue }}" data-keytext="当前是否逾期：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div>
     </div> 
