@@ -130,12 +130,13 @@ class ApiController extends Controller
 				Attachment::insert($data[1]);
 		}else{			
 			$client = Client::select('id')->where('tel', $tel)->first();
-			if($client['id']){
+			if(!$client['id']){
 				return response()->json(['msg' => '提交的电话不存在'], 400);
 			}
+			
 			$agent = Agent::select('id','name','tel')->where('id', $agent_id)->first();
 
-			$order = new Order();			
+			$order = new Order();
 			$order->client_id = $client['id'];
 			$order->agent_id = $agent['id'];
 			$order->agent_name = $agent['name'];
