@@ -18,6 +18,7 @@ class MemberController extends Controller
 	//返回客户首页
     public function client_home()
 	{
+		//$applys = Visitor::latest()->where('process_status', 0)->get();
 		$clients = Client::latest()->paginate(10);
 		return view('member.manage_client', compact('clients'));
 	}

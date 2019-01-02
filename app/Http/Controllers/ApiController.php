@@ -71,6 +71,13 @@ class ApiController extends Controller
 		return response()->json(['msg' => '更新失败'], 400);
 	}
 
+	public function apply_identity()
+	{		
+		Client::where('id', request('client_id'))->update(['apply_status' => 1,'apply_identity' => request('identity'),'name'=> request('name'),'tel'=> request('tel')]);
+		return 200;
+	}
+
+
 	public function client_repayments($client_id)
 	{
 		$order_id = Order::select('id')->where(['status' => 3,'client_id'=> $client_id])->get();

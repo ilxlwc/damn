@@ -23,7 +23,7 @@ Route::post('/submin_login','SessionsController@store');
 Route::get('/logout','SessionsController@destroy');
 //后台首页
 //Route::get('/home','RouteController@home')->name('home');
-// 管理员管理
+//管理员管理
 Route::get('/manage_admin','AdminController@admin_home');
 Route::post('/add_admin','AdminController@add_admin');
 Route::post('/change_adminPassword','AdminController@change_adminPassword');

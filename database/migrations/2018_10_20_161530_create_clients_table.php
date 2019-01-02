@@ -17,6 +17,8 @@ class CreateClientsTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('tel')->nullable();
+            $table->integer('apply_identity')->unsigned();   //申请身份（1：业务员，2：资金方）
+            $table->integer('apply_status')->unsigned()->default(0);//该申请的处理状态（0:默认值，1:已处理， 2:不处理）
             $table->string('openId')->nullable();
             $table->string('nickName')->nullable();
             $table->string('gender')->nullable();

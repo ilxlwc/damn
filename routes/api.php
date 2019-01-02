@@ -24,6 +24,8 @@ Route::post('getWxUserInfo', 'WxxcxController@getWxUserInfo');
 Route::post('changeUserInfo', 'ApiController@changeUserInfo');
 //得到用户信息
 Route::post('getUserInfo', 'ApiController@getUserInfo');
+//借款申请
+Route::post('apply_identity', 'ApiController@apply_identity');
 
 //借款申请
 Route::post('apply_order', 'ApiController@apply_order');
