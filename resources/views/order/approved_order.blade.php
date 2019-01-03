@@ -40,7 +40,15 @@
               </td>
               <td><a href="/order_detail/{{ $order->id }}?status=0" class="templatemo-edit-btn">详情</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#repayModal" data-name="{{ $order->name }}"  data-capital_name="{{ $order->capital_name }}"  data-id="{{ $order->id }}" data-approve_amount="{{ $order->approve_amount }}" >还款</a></td>
-              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#setRepayStatusModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}" data-approve_amount="{{ $order->approve_amount }}" >完成还款</a></td>
+              <td>
+                 @if ($order->repay_status == 1)
+                    &nbsp;
+                 @else
+                    <a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#setRepayStatusModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}" data-approve_amount="{{ $order->approve_amount }}" >完成还款</a>
+                 @endif
+             
+
+              </td>
             </tr>
             @endforeach    
           </tbody>

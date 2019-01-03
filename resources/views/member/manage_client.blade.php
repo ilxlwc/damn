@@ -5,10 +5,31 @@
 @section('content')
 <div class="templatemo-flex-row flex-content-row">
   <div class="col-1">
+    <div id="successAlert" class="hidden alert alert-success" role="alert"></div>
+
+    @foreach ($applys as $apply)
+    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <p>微信用户<strong class="blue-text">{{ $apply->nickName }}</strong>（用户名:{{ $apply->name }}；电话:{{ $apply->tel }}）申请成为
+        <strong class="blue-text">
+           @if ($apply->apply_identity == 1)
+              业务员
+            @elseif ($apply->apply_identity == 2)
+              资金方
+            @else
+              {{ $apply->apply_identity }}
+            @endif
+        </strong>。&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-info" data-identity="{{ $apply->apply_identity }}" data-name="{{ $apply->name }}" data-id="{{ $apply->id }}" onclick="agreeApply(this)">同意</button>
+        <button type="button" class="btn btn-default" data-id="{{ $apply->id }}" onclick="disagreeApply(this)">不同意</button>
+      </p>
+    </div>
+    @endforeach
+
     <!-- //////////////////////////////////////////// -->
     <!-- 客户列表 -->
     <div class="templatemo-content-widget no-padding">
-      <div id="successAlert" class="hidden alert alert-success" role="alert"></div>                
+                      
       <div class="panel panel-default table-responsive">
         <table class="table table-striped table-bordered templatemo-user-table">
           <thead>
@@ -129,6 +150,36 @@ $('#submitChangeIdentity').on('click', function () {
     }
   });
 });
+
+function agreeApply(event) {
+  var id = $(event).attr('data-id');
+  var name = $(event).attr('data-name');
+  var identity = $(event).attr('data-identity');
+  $.ajax({
+    type:'post',
+    url:'/change_client_identity',
+    data: {id : id, name : name, identity : identity, _token:"{{csrf_token()}}"},
+    success:function(data){
+      location.reload();  
+      //setTimeout(function() { location.reload();}, 500);
+    }
+  });
+}
+
+//不同意用户变更身份申请
+function disagreeApply(event) {
+  var id = $(event).attr('data-id');
+  $.ajax({
+    type:'post',
+    url:'/disagree_apply_identity',
+    data: {id : id, _token:"{{csrf_token()}}"},
+    success:function(data){
+      location.reload();  
+      //setTimeout(function() { location.reload();}, 500);
+    }
+  });
+}
+
 
 //更改用户信息-》获取数据
 /*

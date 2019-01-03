@@ -32,6 +32,7 @@ Route::post('/delete_admin','AdminController@delete_admin');
 Route::get('/member','MemberController@client_home');
 Route::get('/manage_client','MemberController@client_home');
 Route::post('/change_client_identity','MemberController@change_client_identity');
+Route::post('/disagree_apply_identity','MemberController@disagree_apply_identity');
 Route::get('/manage_agent','MemberController@agent_home');
 Route::post('/delete_agent_identity','MemberController@delete_agent_identity');
 Route::get('/manage_capital','MemberController@capital_home');

@@ -18,9 +18,9 @@ class MemberController extends Controller
 	//返回客户首页
     public function client_home()
 	{
-		//$applys = Visitor::latest()->where('process_status', 0)->get();
+		$applys = Client::latest()->where('apply_status', 1)->get();
 		$clients = Client::latest()->paginate(10);
-		return view('member.manage_client', compact('clients'));
+		return view('member.manage_client', compact('clients','applys'));
 	}
 
 	//返回业务员首页
@@ -46,6 +46,9 @@ class MemberController extends Controller
 	        'identity' => 'required',
 	    ]);
 		$client = Client::findorfail(request('id'));
+		//更改请求状态码
+		Client::where('id', request('id'))->update(['apply_status' => 2]);
+
 		$data =   [
             'name' => $client['name'],
             'tel' => $client['tel'],
@@ -77,6 +80,15 @@ class MemberController extends Controller
 	    }
 	    Client::where('id',request('id'))->delete();	//软删除client表中的记录  
 		return response()->json(['msg' => request('name')], 200);
+	}
+
+	//不同意用户变更身份申请
+	public function disagree_apply_identity()
+	{
+		$this->validate(request(),['id' => 'required']);
+		//更改请求状态码
+		Client::where('id', request('id'))->update(['apply_status' => 2]);
+		return 200;
 	}
 
 	//更改业务员的身份，即将业务员的身份变成普通用户
