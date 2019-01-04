@@ -21,9 +21,9 @@ class OrderController extends Controller
 
     public function new_order()
 	{
-		$clients = Order::latest()->select('id','name','tel','apply_amount','created_at')->where('status', 0)->paginate(10);
+		$orders = Order::latest()->select('id','client_id','client_id','name','name','tel','apply_amount','created_at')->where('status', 0)->paginate(10);
 		$agents = Agent::latest()->paginate(10);
-		return view('order.new_order',compact('clients','agents'));
+		return view('order.new_order',compact('orders','agents'));
 	}
 
 	public function checking_order()
@@ -43,6 +43,23 @@ class OrderController extends Controller
 	{
 		Order::where('id', request('order_id'))
 		->update(['status' => 1, 'name' => request('order_name'), 'agent_id' => request('agent_id'), 'agent_name' => request('agent_name'), 'agent_tel' => request('agent_tel')]);
+		
+		
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$client_openId = Client::select('openId')->where('id', request('client_id'))->first();
+	    $collector = new Collector($client_openId['openId']);
+		$collector->send($client_openId['openId'], [
+		    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
+		    'page' => 'pages/index/main',
+		    'data' => [
+		        'keyword1' => '您的申请已受理',
+		        'keyword2' => request('agent_name'),
+		        'keyword3' => request('agent_tel'),
+		        'keyword4' => '等待业务员与您联系',
+		    ],
+		]);
+
 		return response()->json(['order_name' => request('order_name'),
 			'agent_name' => request('agent_name'),], 200);
 	}
@@ -70,7 +87,25 @@ class OrderController extends Controller
 	public function to_finding_order()
 	{
 		Order::where('id', request('id'))->update(['status' => 2]);	
+
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$agent_openId = Agent::select('openId')->where('id', request('agent_id'))->first();
+	    $collector = new Collector($agent_openId['openId']);
+		$collector->send($agent_openId['openId'], [
+		    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
+		    'page' => 'pages/index/main',
+		    'data' => [
+		        'keyword1' => request('name'),
+		        'keyword2' => request('tel'),
+		        'keyword3' => '资料验证通过，进行寻款',
+		        'keyword4' => '',
+		    ],
+		]);
+
 		return response()->json(['msg' => '提交成功'], 200);
+		
+
 	}
 
 	public function delete_attachment_order()

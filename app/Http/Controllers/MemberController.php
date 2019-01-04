@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Client;
 use App\Agent;
 use App\Capital;
+use Laravuel\LaravelWFC\Collector;
 
 class MemberController extends Controller
 {
@@ -40,6 +41,7 @@ class MemberController extends Controller
 	//更改用户的身份
 	public function change_client_identity()
 	{
+		
 		$this->validate(request(),[
 			'id' => 'required',
 	        'name' => 'required',
@@ -78,7 +80,25 @@ class MemberController extends Controller
 	    		Capital::create($data);
 	    	}
 	    }
-	    Client::where('id',request('id'))->delete();	//软删除client表中的记录  
+	    Client::where('id',request('id'))->delete();	//软删除client表中的记录
+
+	    //微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$applyType="申请成为业务员已成功";
+		if(request('identity') == 2){
+			$applyType="申请成为资金方已成功";
+		}
+	    $collector = new Collector($client['openId']);
+		$collector->send($client['openId'], [
+		    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
+		    'page' => 'index',
+		    'data' => [
+		        'keyword1' => $applyType,
+		        'keyword2' => $client['name'],
+		        'keyword3' => $client['tel'],
+		    ],
+		]);
+
 		return response()->json(['msg' => request('name')], 200);
 	}
 

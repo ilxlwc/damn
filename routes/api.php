@@ -20,11 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //用户登录
 Route::post('getWxUserInfo', 'WxxcxController@getWxUserInfo');
 
-//修改用户信息
+//修改用户信息(弃用)
 Route::post('changeUserInfo', 'ApiController@changeUserInfo');
 //得到用户信息
 Route::post('getUserInfo', 'ApiController@getUserInfo');
-//借款申请
+//用户提交身份变更申请
 Route::post('apply_identity', 'ApiController@apply_identity');
 
 //借款申请

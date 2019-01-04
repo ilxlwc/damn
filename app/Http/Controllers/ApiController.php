@@ -11,6 +11,7 @@ use App\Attachment;
 use App\Repayment;
 use App\Intention;
 use App\Introduction;
+use Laravuel\LaravelWFC\Collector;
 
 class ApiController extends Controller
 {
@@ -30,6 +31,14 @@ class ApiController extends Controller
 		$order->client_remark = request('client_remark');
 		$order->save();
 		//return response()->json($order, 200);
+		
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$formId = request('formId');
+		$client_openId = Client::select('openId')->where('id', request('client_id'))->first();		
+		$collector = new Collector($client_openId['openId']);
+		$collector->save($formId);
+
 		return 200;
 	}
 
@@ -74,6 +83,14 @@ class ApiController extends Controller
 	public function apply_identity()
 	{		
 		Client::where('id', request('client_id'))->update(['apply_status' => 1,'apply_identity' => request('identity'),'name'=> request('name'),'tel'=> request('tel')]);
+
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$formId = request('formId');
+		$client = Client::select('openId')->where('id', request('client_id'))->first();		
+		$collector = new Collector($client['openId']);
+		$collector->save($formId);
+
 		return 200;
 	}
 
@@ -189,6 +206,13 @@ class ApiController extends Controller
 			Attachment::insert($data[1]);
 		}
 		
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$formId = request('formId');
+		$agent = Agent::select('openId')->where('id', $agent_id)->first();		
+		$collector = new Collector($agent['openId']);
+		$collector->save($formId);
+
 		return 200;
 		//return response()->json("信息提交成功", 200);
 	}
@@ -245,6 +269,14 @@ class ApiController extends Controller
 		$intention->capital_id = request('capital_id');
 		$intention->email = request('email');
 		$intention->save();
+
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$formId = request('formId');
+		$capital = Capital::select('openId')->where('id', request('capital_id'))->first();		
+		$collector = new Collector($capital['openId']);
+		$collector->save($formId);
+
 		return 200;
 	}
 

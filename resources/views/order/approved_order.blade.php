@@ -46,8 +46,6 @@
                  @else
                     <a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#setRepayStatusModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}" data-approve_amount="{{ $order->approve_amount }}" >完成还款</a>
                  @endif
-             
-
               </td>
             </tr>
             @endforeach    

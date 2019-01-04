@@ -146,7 +146,7 @@
     </div> 
     @if (Request::get('status') == 1)
     <div class="text-center">
-      <button type="button" data-id="{{ $order->id }}" id="submitToFindingOrder" class="btn btn-success btn-lg">资料验证通过，进行寻款</button>
+      <button type="button" data-agent_id="{{ $order->agent_id }}" data-name="{{ $order->name }}" data-tel="{{ $order->tel }}" data-id="{{ $order->id }}" id="submitToFindingOrder" class="btn btn-success btn-lg">资料验证通过，进行寻款</button>
     </div>
     @endif
   </div>
@@ -167,10 +167,13 @@ $(document).ready(function($){$(".swipebox").swipebox();});
 //资料验证通过，进行寻款
 $('#submitToFindingOrder').on('click', function () {
   var id = $(this).attr("data-id");
+  var agent_id = $(this).attr("data-agent_id");
+  var name = $(this).attr("data-name");
+  var tel = $(this).attr("data-tel");
   $.ajax({
     type:'post',
     url:'/to_finding_order',
-    data: {id : id, _token:"{{csrf_token()}}"},
+    data: {id : id, agent_id : agent_id, name : name, tel : tel, _token:"{{csrf_token()}}"},
     success:function(data){
       window.location.href = "/checking_order";
     }

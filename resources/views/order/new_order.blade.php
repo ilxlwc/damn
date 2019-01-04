@@ -23,20 +23,20 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($clients as $client)
+            @foreach ($orders as $order)
             <tr>
-              <td>{{ $client->name }}</td>
-              <td>{{ $client->tel }}</td>
-              <td>{{ $client->apply_amount }}</td>
-              <td>{{ $client->created_at }}</td>
-              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotAgentModal" data-name="{{ $client->name }}" data-id="{{ $client->id }}">指派业务员</a></td>
-              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#ignoreOrderModal" data-name="{{ $client->name }}" data-id="{{ $client->id }}">不受理</a></td>
+              <td>{{ $order->name }}</td>
+              <td>{{ $order->tel }}</td>
+              <td>{{ $order->apply_amount }}</td>
+              <td>{{ $order->created_at }}</td>
+              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotAgentModal" data-name="{{ $order->name }}" data-client_id="{{ $order->client_id }}" data-id="{{ $order->id }}">指派业务员</a></td>
+              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#ignoreOrderModal" data-name="{{ $order->name }}" data-client_id="{{ $order->client_id }}" data-id="{{ $order->id }}">不受理</a></td>
             </tr>
             @endforeach            
           </tbody>
           <tfoot>
             <tr id="paging-margin">
-              <td colspan="5" class="text-center">{!! $clients->render() !!}</td>
+              <td colspan="5" class="text-center">{!! $orders->render() !!}</td>
             </tr>
           </tfoot>
         </table>    
@@ -60,6 +60,7 @@
       <div class="modal-body">
         <input type="hidden" id="allot_orderId" value="">
         <input type="hidden" id="allot_orderName" value="">
+        <input type="hidden" id="allot_client_id" value="">
         <input type="hidden" id="allot_agentId" value="">
         <input type="hidden" id="allot_agentName" value="">
         <input type="hidden" id="allot_agentTel" value="">
@@ -134,6 +135,7 @@ $('#allotAgentModal').on('show.bs.modal', function (event) {
   $('#allotAlert').html('');
   $('#allot_orderId').val('');
   $('#allot_orderName').val('');
+  $('#allot_client_id').val('');
   $('#allot_agentId').val('');
   $('#allot_agentName').val('');
   $('#allot_agentTel').val('');
@@ -142,6 +144,7 @@ $('#allotAgentModal').on('show.bs.modal', function (event) {
   var modal = $(this);  //当前模态框
   $('#allot_orderId').val(btnThis.attr('data-id'));
   $('#allot_orderName').val(btnThis.attr('data-name'));  
+  $('#allot_client_id').val(btnThis.attr('data-client_id')); 
 });
 
 $('.allotSelected').on('click', function (event) {
@@ -160,6 +163,7 @@ $('.allotSelected').on('click', function (event) {
 $('#submitAllot').on('click', function () {
   var order_id = $('#allot_orderId').val();
   var order_name = $('#allot_orderName').val();
+  var client_id = $('#allot_client_id').val();
   var agent_id = $('#allot_agentId').val();
   var agent_name = $('#allot_agentName').val(); 
   var agent_tel = $('#allot_agentTel').val(); 
@@ -167,7 +171,7 @@ $('#submitAllot').on('click', function () {
   $.ajax({
     type:'post',
     url:'/allot_agent_order',
-    data: {order_id : order_id, order_name : order_name, agent_id : agent_id, agent_name : agent_name, agent_tel : agent_tel, _token:"{{csrf_token()}}"},
+    data: {order_id : order_id, order_name : order_name, client_id : client_id, agent_id : agent_id, agent_name : agent_name, agent_tel : agent_tel, _token:"{{csrf_token()}}"},
     success:function(data){
       $('#successAlert').html("已成功的为用户 <strong >"+data.order_name+"</strong> 指定了业务员 <strong class='blue-text'>"+data.agent_name+"</strong>" );
       $('#successAlert').removeClass("hidden");

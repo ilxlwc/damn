@@ -151,6 +151,7 @@ return [
          * Package Service Providers...
          */
         Iwanli\Wxxcx\WxxcxServiceProvider::class,
+        Laravuel\LaravelWFC\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
