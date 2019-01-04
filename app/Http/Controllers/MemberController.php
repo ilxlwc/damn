@@ -87,7 +87,7 @@ class MemberController extends Controller
 		//https://linux.ctolib.com/laravuel-laravel-wfc.html
 		$applyType="申请成为业务员已成功";
 		if(request('identity') == 2){
-			$applyType="申请成为资金方已成功";
+			$applyType="您申请成为资金方已成功";
 		}
 	    $collector = new Collector($client['openId']);
 		$collector->send([

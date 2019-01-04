@@ -49,7 +49,7 @@ class OrderController extends Controller
 		//https://linux.ctolib.com/laravuel-laravel-wfc.html
 		$client_openId = Client::select('openId')->where('id', request('client_id'))->first();
 	    $collector = new Collector($client_openId['openId']);
-		$collector->send($client_openId['openId'], [
+		$collector->send([
 		    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
 		    'page' => 'pages/index/main',
 		    'data' => [
@@ -93,7 +93,7 @@ class OrderController extends Controller
 			//https://linux.ctolib.com/laravuel-laravel-wfc.html
 			$agent_openId = Agent::select('openId')->where('id', request('agent_id'))->first();
 		    $collector = new Collector($agent_openId['openId']);
-			$collector->send($agent_openId['openId'], [
+			$collector->send([
 			    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
 			    'page' => 'pages/index/main',
 			    'data' => [
