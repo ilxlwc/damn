@@ -82,30 +82,23 @@ class MemberController extends Controller
 	    }
 	    Client::where('id',request('id'))->delete();	//软删除client表中的记录
 
-	    try
- 		{
-		    //微信小程序模板消息群发
-			//https://linux.ctolib.com/laravuel-laravel-wfc.html
-			$applyType="申请成为业务员已成功";
-			if(request('identity') == 2){
-				$applyType="申请成为资金方已成功";
-			}
-		    $collector = new Collector($client['openId']);
-			$collector->send($client['openId'], [
-			    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
-			    'page' => 'pages/index/main',
-			    'data' => [
-			        'keyword1' => $applyType,
-			        'keyword2' => $client['name'],
-			        'keyword3' => $client['tel'],
-			    ],
-			]);
-
-		}		
-		catch(Exception $e)
-		{
-		 echo 'Message: ' .$e->getMessage();
+	    
+	    //微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$applyType="申请成为业务员已成功";
+		if(request('identity') == 2){
+			$applyType="申请成为资金方已成功";
 		}
+	    $collector = new Collector($client['openId']);
+		$collector->send([
+		    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
+		    'page' => 'pages/index/main',
+		    'data' => [
+		        'keyword1' => $applyType,
+		        'keyword2' => $client['name'],
+		        'keyword3' => $client['tel'],
+		    ],
+		]);
 
 		return response()->json(['msg' => request('name')], 200);
 	}
