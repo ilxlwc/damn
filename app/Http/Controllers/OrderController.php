@@ -87,21 +87,26 @@ class OrderController extends Controller
 	public function to_finding_order()
 	{
 		Order::where('id', request('id'))->update(['status' => 2]);	
-
-		//微信小程序模板消息群发
-		//https://linux.ctolib.com/laravuel-laravel-wfc.html
-		$agent_openId = Agent::select('openId')->where('id', request('agent_id'))->first();
-	    $collector = new Collector($agent_openId['openId']);
-		$collector->send($agent_openId['openId'], [
-		    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
-		    'page' => 'pages/index/main',
-		    'data' => [
-		        'keyword1' => request('name'),
-		        'keyword2' => request('tel'),
-		        'keyword3' => '资料验证通过，进行寻款',
-		        'keyword4' => '',
-		    ],
-		]);
+		try
+ 		{
+			//微信小程序模板消息群发
+			//https://linux.ctolib.com/laravuel-laravel-wfc.html
+			$agent_openId = Agent::select('openId')->where('id', request('agent_id'))->first();
+		    $collector = new Collector($agent_openId['openId']);
+			$collector->send($agent_openId['openId'], [
+			    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
+			    'data' => [
+			        'keyword1' => request('name'),
+			        'keyword2' => request('tel'),
+			        'keyword3' => '资料验证通过，进行寻款',
+			        'keyword4' => '',
+			    ],
+			]);
+		}		
+		catch(Exception $e)
+		{
+		 echo 'Message: ' .$e->getMessage();
+		}
 
 		return response()->json(['msg' => '提交成功'], 200);
 		
