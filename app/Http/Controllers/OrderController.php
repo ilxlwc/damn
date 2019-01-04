@@ -95,6 +95,7 @@ class OrderController extends Controller
 		    $collector = new Collector($agent_openId['openId']);
 			$collector->send($agent_openId['openId'], [
 			    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
+			    'page' => 'pages/index/main',
 			    'data' => [
 			        'keyword1' => request('name'),
 			        'keyword2' => request('tel'),

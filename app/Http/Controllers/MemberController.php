@@ -93,6 +93,7 @@ class MemberController extends Controller
 		    $collector = new Collector($client['openId']);
 			$collector->send($client['openId'], [
 			    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
+			    'page' => '',
 			    'data' => [
 			        'keyword1' => $applyType,
 			        'keyword2' => $client['name'],
