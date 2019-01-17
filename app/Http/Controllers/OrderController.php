@@ -220,7 +220,7 @@ class OrderController extends Controller
 		}
 		//print_r($arr);		
 		foreach ($orders as $order) {
-			if(in_array($order->id, $arr)){
+			if($order->repay_status == 0 && in_array($order->id, $arr)){
 				$order->is_overdue = 1;
 			}else{
 				$order->is_overdue = 0;
