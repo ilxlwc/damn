@@ -26,7 +26,11 @@
           </thead>
           <tbody>
             @foreach ($orders as $order)
-            <tr>
+              @if ($order->is_overdue == 1)
+                <tr class="danger">
+              @else
+                <tr>
+              @endif
               <td>{{ $order->name }}</td>
               <td>{{ $order->agent_name }}</td>
               <td>{{ $order->capital_name }}</td>

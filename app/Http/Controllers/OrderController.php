@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Order;
 use App\Client;
 use App\Agent;
@@ -109,8 +110,7 @@ class OrderController extends Controller
 		 echo 'Message: ' .$e->getMessage();
 		}
 
-		return response()->json(['msg' => '提交成功'], 200);
-		
+		return response()->json(['msg' => '提交成功'], 200);		
 
 	}
 
@@ -212,8 +212,21 @@ class OrderController extends Controller
 
     public function approved_order()
 	{
-		$orders = Order::latest()->where('status', 3)->paginate(10);		
-		return view('order.approved_order',compact('orders'));
+		$orders = Order::latest()->where('status', 3)->paginate(10);
+		$noRepay = Repayment::where('status', 0)->whereDate('repay_date', '<=', Carbon::today())->pluck('order_id');
+		$arr=array();
+		foreach ($noRepay as $num) {
+			array_push($arr, $num);
+		}
+		//print_r($arr);		
+		foreach ($orders as $order) {
+			if(in_array($order->id, $arr)){
+				$order->is_overdue = 1;
+			}else{
+				$order->is_overdue = 0;
+			}	
+		}
+		return view('order.approved_order', compact('orders'));
 	}
 
 	public function repayments_detail()
