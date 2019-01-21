@@ -139,7 +139,7 @@ class OrderController extends Controller
 	            //把临时文件移动到指定的位置，并重命名
 	            $path = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
 	           
-	            $path_thumbnail = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
+	            $path_thumbnail = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR;
 	           
 
 	            // 通过指定 driver 来创建一个 image manager 实例
@@ -151,7 +151,7 @@ class OrderController extends Controller
 
 	            $bool =  $file->move($path,$file_name);
 	            if($bool){
-	                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/thumbnail/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
+	                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/thumbnail/'.$file_name;
 	                $img_origianl_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
 	            }
 
