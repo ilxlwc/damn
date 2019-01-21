@@ -11,6 +11,7 @@ use App\Capital;
 use App\Attachment;
 use App\Repayment;
 use App\Intention;
+use Image;
 
 class OrderController extends Controller
 {
@@ -133,13 +134,27 @@ class OrderController extends Controller
     		{    			
     			$ext = $file->getClientOriginalExtension();
     			$file_name = date("YmdHis",time()).'-'.uniqid().".".$ext;//保存的文件名
-	            if(!in_array($ext,['jpg','jpeg','gif','png']) ) return response()->json(['msg' => '文件类型不是图片'], 400);
+	            if(!in_array($ext,['jpg','jpeg','gif','png']) ) 
+	            	return response()->json(['msg' => '文件类型不是图片'], 400);
 	            //把临时文件移动到指定的位置，并重命名
 	            $path = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
+	           
+	            $path_thumbnail = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
+	           
+
+	            // 通过指定 driver 来创建一个 image manager 实例
+				$img = Image::make($file);
+				$img->resize(300, null, function ($constraint) {
+				    $constraint->aspectRatio();
+				});
+				$img->save($path_thumbnail.$file_name);
+
 	            $bool =  $file->move($path,$file_name);
 	            if($bool){
-	                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
+	                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/thumbnail/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
+	                $img_origianl_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
 	            }
+
         	}
        	}
 
@@ -170,6 +185,7 @@ class OrderController extends Controller
        		$attachment = new Attachment();
 			$attachment->order_id = request('order_id');
 			$attachment->url = $img_path;
+			$attachment->original_url = $img_origianl_path;
 			$attachment->file_type = $file_type;
 			$attachment->file_desc = $file_desc;
 			$attachment->save();
