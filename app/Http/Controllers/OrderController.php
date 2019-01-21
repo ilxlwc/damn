@@ -50,17 +50,19 @@ class OrderController extends Controller
 		//https://linux.ctolib.com/laravuel-laravel-wfc.html
 		$client_openId = Client::select('openId')->where('id', request('client_id'))->first();
 	    $collector = new Collector($client_openId['openId']);
-		$collector->send([
-		    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
-		    'page' => 'pages/index/main',
-		    'data' => [
-		        'keyword1' => '您的申请已受理',
-		        'keyword2' => request('agent_name'),
-		        'keyword3' => request('agent_tel'),
-		        'keyword4' => '等待业务员与您联系',
-		    ],
-		]);
-
+	    $formId = $collector->get();
+		if($formId != false){
+			$collector->send([
+			    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
+			    'page' => 'pages/index/main',
+			    'data' => [
+			        'keyword1' => '您的申请已受理',
+			        'keyword2' => request('agent_name'),
+			        'keyword3' => request('agent_tel'),
+			        'keyword4' => '等待业务员与您联系',
+			    ],
+			]);
+		}
 		return response()->json(['order_name' => request('order_name'),
 			'agent_name' => request('agent_name'),], 200);
 	}
@@ -88,26 +90,23 @@ class OrderController extends Controller
 	public function to_finding_order()
 	{
 		Order::where('id', request('id'))->update(['status' => 2]);	
-		try
- 		{
-			//微信小程序模板消息群发
-			//https://linux.ctolib.com/laravuel-laravel-wfc.html
-			$agent_openId = Agent::select('openId')->where('id', request('agent_id'))->first();
-		    $collector = new Collector($agent_openId['openId']);
+		
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$agent_openId = Agent::select('openId','name','tel')->where('id', request('agent_id'))->first();
+	    $collector = new Collector($agent_openId['openId']);
+	    $formId = $collector->get();
+		if($formId != false){
 			$collector->send([
-			    'template_id' => 'Gw9PPQFsoL2faFiiqQqpF6-MdEIbAE5Yh9dJ1eKneOg',
+			    'template_id' => 'xAdMP8NCFoj8smcyDx8VW6rhCZUidRYwzK9fp8WYY',
 			    'page' => 'pages/index/main',
 			    'data' => [
-			        'keyword1' => request('name'),
-			        'keyword2' => request('tel'),
+			        'keyword1' => $agent_openId['name'],
+			        'keyword2' => $agent_openId['tel'],
 			        'keyword3' => '资料验证通过，进行寻款',
-			        'keyword4' => '',
+			        'keyword4' => ' ',
 			    ],
 			]);
-		}		
-		catch(Exception $e)
-		{
-		 echo 'Message: ' .$e->getMessage();
 		}
 
 		return response()->json(['msg' => '提交成功'], 200);		
@@ -205,6 +204,24 @@ class OrderController extends Controller
 			$repay['updated_at'] = date("Y-m-d H:i:s");
 		}
 		Repayment::insert($repayments);
+
+		//微信小程序模板消息群发
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		$capital_openId = Capital::select('openId')->where('id', request('capital_id'))->first();
+	    $collector = new Collector($capital_openId['openId']);
+	    $formId = $collector->get();
+		if($formId != false){
+			$collector->send([
+			    'template_id' => 'xAdMP8NCFoj8smcyDx8VW6rhCZUidRYwzK9fp8WYY',
+			    'page' => 'pages/index/main',
+			    'data' => [
+			        'keyword1' => request('order_name'),
+			        'keyword2' => request('order_tel'),
+			        'keyword3' => '您已成功借款给该用户',
+			        'keyword4' => '借款金额：'+ request('approve_amount'),
+			    ],
+			]);
+		}
 		
 		return response()->json(['order_name' => request('order_name'),
 			'capital_name' => request('capital_name'),], 200);

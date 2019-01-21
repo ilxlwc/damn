@@ -32,7 +32,7 @@
               <td>{{ $order->agent_name }}</td>
               <td>{{ $order->prepare_amount }}</td>
               <td><a href="/order_detail/{{ $order->id }}?status=0" class="templatemo-edit-btn">详情</a></td>
-              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotCapitalModal" data-prepare_amount="{{ $order->prepare_amount }}" data-name="{{ $order->name }}" data-id="{{ $order->id }}">批款</a></td>
+              <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#allotCapitalModal" data-prepare_amount="{{ $order->prepare_amount }}" data-name="{{ $order->name }}" data-tel="{{ $order->tel }}" data-id="{{ $order->id }}">批款</a></td>
               <td><a href="" class="templatemo-edit-btn" data-toggle="modal" data-target="#intentionOrderModal" data-name="{{ $order->name }}" data-id="{{ $order->id }}">意向资金方</a></td>
             </tr>
             @endforeach            
@@ -63,6 +63,7 @@
       <div class="modal-body">
         <input type="hidden" id="allot_orderId" value="">
         <input type="hidden" id="allot_orderName" value="">
+        <input type="hidden" id="allot_orderTel" value="">
         <input type="hidden" id="allot_capitalId" value="">
         <input type="hidden" id="allot_capitalName" value="">
         <input type="hidden" id="allot_capitalTel" value="">       
@@ -176,6 +177,7 @@ $('#allotCapitalModal').on('show.bs.modal', function (event) {
   $('#allotAlert').html('');
   $('#allot_orderId').val('');
   $('#allot_orderName').val('');
+  $('#allot_orderTel').val('');
   $('#allot_capitalId').val('');
   $('#allot_capitalName').val('');
   $('#allot_capitalTel').val('');
@@ -190,8 +192,8 @@ $('#allotCapitalModal').on('show.bs.modal', function (event) {
   var btnThis = $(event.relatedTarget); //触发事件的按钮
   var modal = $(this);  //当前模态框
   $('#allot_orderId').val(btnThis.attr('data-id'));
-  $('#allot_orderName').val(btnThis.attr('data-name'));  
-  $('#agent_name').html(btnThis.attr('data-name'));
+  $('#allot_orderName').val(btnThis.attr('data-name'));
+  $('#allot_orderTel').val(btnThis.attr('data-tel')); 
   $('#prepare_amount').html(btnThis.attr('data-prepare_amount')); 
 });
 
@@ -226,7 +228,8 @@ $('#set_repay_count').on('click', function (event) {
 //批款-》提交数据
 $('#submitAllot').on('click', function () {
   var order_id = $('#allot_orderId').val();
-  var order_name = $('#allot_orderName').val();  
+  var order_name = $('#allot_orderName').val();
+  var order_tel = $('#allot_orderTel').val();  
   var capital_name = $('#allot_capitalName').val(); 
   var capital_tel = $('#allot_capitalTel').val(); 
   var approve_amount = $('#approve_amount').val();
@@ -258,7 +261,7 @@ $('#submitAllot').on('click', function () {
   $.ajax({
     type:'post',
     url:'/allot_capital_order',
-    data: {order_id : order_id, order_name : order_name, capital_id : capital_id, capital_name : capital_name, capital_tel : capital_tel, approve_amount : approve_amount,repayments : repayments, _token:"{{csrf_token()}}"},
+    data: {order_id : order_id, order_name : order_name, order_tel : order_tel, capital_id : capital_id, capital_name : capital_name, capital_tel : capital_tel, approve_amount : approve_amount,repayments : repayments, _token:"{{csrf_token()}}"},
     success:function(data){
       $('#successAlert').html("已成功的为用户 <strong >"+data.order_name+"</strong> 分配了资金方： <strong class='blue-text'>"+data.capital_name+"</strong>" );
       $('#successAlert').removeClass("hidden");

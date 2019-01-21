@@ -49,7 +49,7 @@
             @else
               {{ $order->gender }}
             @endif
-        </span>&nbsp;<i data-key="gender" data-value="{{ $order->gender }}" data-keytext="姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        </span>&nbsp;<i data-key="gender" data-value="{{ $order->gender }}" data-keytext="姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeSelectModal"></i></div>
       </div>
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>身份证号：</label><span class="blue-text" id="idcard">{{ $order->idcard }}</span>&nbsp;<i data-key="idcard" data-value="{{ $order->idcard }}" data-keytext="身份证号：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
@@ -64,7 +64,7 @@
             @else
               {{ $order->marital_status }}
             @endif
-        </span>&nbsp;<i data-key="marital_status" data-value="{{ $order->marital_status }}" data-keytext="婚姻状况：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        </span>&nbsp;<i data-key="marital_status" data-value="{{ $order->marital_status }}" data-keytext="婚姻状况：" class="fa fa-edit" data-toggle="modal" data-target="#changeSelectModal"></i></div>
       </div><hr/>
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>共借人关系：</label><span class="blue-text" id="coborrower_relation">{{ $order->coborrower_relation }}</span>&nbsp;<i data-key="coborrower_relation" data-value="{{ $order->coborrower_relation }}" data-keytext="共借人关系：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
@@ -79,7 +79,7 @@
             @else
               {{ $order->coborrower_gender }}
             @endif
-        </span>&nbsp;<i data-key="coborrower_gender" data-value="{{ $order->coborrower_gender }}" data-keytext="共借人姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        </span>&nbsp;<i data-key="coborrower_gender" data-value="{{ $order->coborrower_gender }}" data-keytext="共借人姓别：" class="fa fa-edit" data-toggle="modal" data-target="#changeSelectModal"></i></div>
       </div>
       <div class="templatemo-flex-row flex-content-row">
         <div class="col-1"><label>共借人身份证号：</label><span class="blue-text" id="coborrower_idcard">{{ $order->coborrower_idcard }}</span>&nbsp;<i data-key="coborrower_idcard" data-value="{{ $order->coborrower_idcard }}" data-keytext="共借人身份证号：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
@@ -94,7 +94,7 @@
             @else
               {{ $order->credit_record }}
             @endif
-        </span>&nbsp;<i data-key="credit_record" data-value="{{ $order->credit_record }}" data-keytext="信用记录是否空白：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        </span>&nbsp;<i data-key="credit_record" data-value="{{ $order->credit_record }}" data-keytext="信用记录是否空白：" class="fa fa-edit" data-toggle="modal" data-target="#changeSelectModal"></i></div>
         <div class="col-1"><label>止付，冻结，杂帐：</label><span class="blue-text" id="credit_record_status">
            @if ($order->credit_record_status == 0)
               止付
@@ -105,7 +105,7 @@
             @else
               {{ $order->credit_record_status }}
             @endif
-        </span>&nbsp;<i data-key="credit_record_status" data-value="{{ $order->credit_record_status }}" data-keytext="是否包含止付，冻结，杂帐：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
+        </span>&nbsp;<i data-key="credit_record_status" data-value="{{ $order->credit_record_status }}" data-keytext="是否包含止付，冻结，杂帐：" class="fa fa-edit" data-toggle="modal" data-target="#changeSelectModal"></i></div>
         <div class="col-1"><label>当前是否逾期：</label><span class="blue-text" id="overdue">{{ $order->overdue }}</span>&nbsp;<i data-key="overdue" data-value="{{ $order->overdue }}" data-keytext="当前是否逾期：" class="fa fa-edit" data-toggle="modal" data-target="#changeModal"></i></div>
       </div>
     </div> 
@@ -232,6 +232,55 @@
   </div>
 </div>
 
+<div class="modal fade" id="changeSelectModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">修改信息</h4>
+      </div> 
+      <div class="modal-body">
+        <input type="hidden" id="changeType" value="">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <p class="blue-text" id="description"></p>
+              <div id="gender-radio" class="blue-text hidden">
+                  <input type="radio" name="gender" value="0" data-label="未知"><label>未知</label>&nbsp;&nbsp;
+                  <input type="radio" name="gender" value="1" data-label="男"><label>男</label>&nbsp;&nbsp;
+                  <input type="radio" name="gender" value="2" data-label="女"><label>女</label>
+              </div>
+              <div id="marital_status-radio" class="blue-text hidden">
+                  <input type="radio" name="marital_status" value="0" data-label="未婚"><label>未婚</label>&nbsp;&nbsp;
+                  <input type="radio" name="marital_status" value="1" data-label="已婚"><label>已婚</label>&nbsp;&nbsp;
+                  <input type="radio" name="marital_status" value="2" data-label="离异"><label>离异</label>
+              </div>
+              <div id="coborrower_gender-radio" class="blue-text hidden">
+                  <input type="radio" name="coborrower_gender" value="0" data-label="未知"><label>未知</label>&nbsp;&nbsp;
+                  <input type="radio" name="coborrower_gender" value="1" data-label="男"><label>男</label>&nbsp;&nbsp;
+                  <input type="radio" name="coborrower_gender" value="2" data-label="女"><label>女</label>
+              </div>
+              <div id="credit_record-radio" class="blue-text hidden">
+                  <input type="radio" name="credit_record" value="0" data-label="空白"><label>空白</label>&nbsp;&nbsp;
+                  <input type="radio" name="credit_record" value="1" data-label="非空白"><label>非空白</label>
+              </div>
+              <div id="credit_record_status-radio" class="blue-text hidden">
+                  <input type="radio" name="credit_record_status" value="0" data-label="止付"><label>止付</label>&nbsp;&nbsp;
+                  <input type="radio" name="credit_record_status" value="1" data-label="冻结"><label>冻结</label>&nbsp;&nbsp;
+                  <input type="radio" name="credit_record_status" value="2" data-label="杂帐"><label>杂帐</label>
+              </div>
+            </div> 
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+        <button type="button" id="submitSelectChange" class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 不受理订单模态框 -->
 <div class="modal fade" id="submitDeleteModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm" role="document">
@@ -285,6 +334,42 @@ $('#submitChange').on('click', function () {
     }
   });
 });
+
+//更改信息-》获取数据
+$('#changeSelectModal').on('show.bs.modal', function (event) {
+  var btnThis = $(event.relatedTarget); //触发事件的按钮
+  var key = btnThis.attr('data-key');
+  var value = btnThis.attr('data-value');
+  $("#"+key+"-radio").removeClass("hidden");
+  $("#"+key+"-radio input[type='radio'][name='"+key+"'][value='"+value+"']").prop("checked", true);
+  $('#description').text(btnThis.attr('data-keytext'));
+  $('#changeType').val(key);
+});
+
+//更改信息-》提交数据
+$('#submitSelectChange').on('click', function () {
+  var id = $('#order_id').val();
+  var key = $('#changeType').val();
+  var value = $("#"+key+"-radio input[type='radio'][name='"+key+"']:checked").val();
+  var label = $("#"+key+"-radio input[type='radio'][name='"+key+"']:checked").attr('data-label');
+  $('#changeType').val('');
+  $("#"+key+"-radio").addClass("hidden");
+  $('#description').text('');
+  $('#changeSelectModal').modal('hide');
+  $.ajax({
+    type:'post',
+    url:'/sumbit_change_order',
+    data: {id : id, key : key, value : value, _token:"{{csrf_token()}}"},
+    success:function(data){
+     $("#"+key+"").text(label);
+    }
+  });
+});
+
+
+
+
+
 
 //删除附件-》获取数据
 $('#submitDeleteModal').on('show.bs.modal', function (event) {

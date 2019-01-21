@@ -30,6 +30,8 @@ class ApiController extends Controller
 		$order->apply_amount = request('apply_amount');
 		$order->client_remark = request('client_remark');
 		$order->save();
+
+		Client::where('id', request('client_id'))->update(['name'=> request('name'),'tel'=> request('tel')]);
 		//return response()->json($order, 200);
 		
 		//微信小程序模板消息群发

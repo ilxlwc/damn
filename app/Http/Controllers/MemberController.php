@@ -82,46 +82,28 @@ class MemberController extends Controller
 	    }
 	    Client::where('id',request('id'))->delete();	//软删除client表中的记录
 
-	    //send_wxinfo(request('identity'), $client['openId'], $client['name'], $client['tel']);
-	    
+	   
 	    //微信小程序模板消息群发
-		//https://linux.ctolib.com/laravuel-laravel-wfc.html
+		//https://linux.ctolib.com/laravuel-laravel-wfc.html		
 		$applyType="申请成为业务员已成功";
 		if(request('identity') == 2){
 			$applyType="您申请成为资金方已成功";
 		}
 	 	$collector = new Collector($client['openId']);
-		$collector->send([
-		    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
-		    'page' => 'pages/index/main',
-		    'data' => [
-		        'keyword1' => $applyType,
-		        'keyword2' => $client['name'],
-		        'keyword3' => $client['tel'],
-		    ],
-		]);
-
-		return response()->json(['msg' => request('name')], 200);
-	}
-
-	private function send_wxinfo($identity, $openId, $name, $tel)
-	{
-		 //微信小程序模板消息群发
-		//https://linux.ctolib.com/laravuel-laravel-wfc.html
-		$applyType="申请成为业务员已成功";
-		if($identity== 2){
-			$applyType="您申请成为资金方已成功";
+		
+		$formId = $collector->get();
+		if($formId != false){
+			$collector->send([
+			    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
+			    'page' => 'pages/index/main',
+			    'data' => [
+			        'keyword1' => $applyType,
+			        'keyword2' => $client['name'],
+			        'keyword3' => $client['tel'],
+			    ],
+			]);
 		}
-	    $collector = new Collector($openId);
-		$collector->send([
-		    'template_id' => 'LKwvaScuk9aCGF0xJwRBrAA5z0EzJkMEVsgClklmyzY',
-		    'page' => 'pages/index/main',
-		    'data' => [
-		        'keyword1' => $applyType,
-		        'keyword2' => $name,
-		        'keyword3' => $tel,
-		    ],
-		]);
+		return response()->json(['msg' => request('name')], 200);
 	}
 
 	//不同意用户变更身份申请
