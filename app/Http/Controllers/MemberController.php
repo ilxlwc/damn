@@ -51,7 +51,7 @@ class MemberController extends Controller
 		//更改请求状态码
 		Client::where('id', request('id'))->update(['apply_status' => 2]);
 
-		$data =   [
+		$data = [
             'name' => $client['name'],
             'tel' => $client['tel'],
             'openId' => $client['openId'],

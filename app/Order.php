@@ -14,7 +14,7 @@ class Order extends Model
     protected $dates = ['deleted_at'];
 
     // 追加到模型数组表单的访问器
-    protected $appends = ['is_overdue'];
+    //protected $appends = ['is_overdue'];
 
 	/**
      * 获得此申请的附件；1：n关系
