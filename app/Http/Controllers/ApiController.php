@@ -228,15 +228,23 @@ class ApiController extends Controller
             if(!in_array($ext,['jpg','jpeg','gif','png']) ) return response()->json(err('文件类型不是图片'));
             //把临时文件移动到指定的位置，并重命名
             $path = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
+            
+            $path_thumbnail = public_path().DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR;
+	        
+	        // 通过指定 driver 来创建一个 image manager 实例
+			$img = Image::make($file);
+			$img->resize(300, null, function ($constraint) {
+			    $constraint->aspectRatio();
+			});
+			$img->save($path_thumbnail.$file_name);
+
             $bool =  $file->move($path,$file_name);
             if($bool){
-                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
-                // $data = [
-                //     //'domain_img_path'=>get_domain().$img_path,
-                //     'domain_img_path'=>$img_path,
-                //     'img_path'=>$img_path,
-                // ];
+                $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/thumbnail/'.$file_name;
+	            $img_origianl_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
+
                 return response()->json($img_path, 200);
+                //return response()->json([$img_path, $img_origianl_path], 200);
             }else{
                 return 400;
             }

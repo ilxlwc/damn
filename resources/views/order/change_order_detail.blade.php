@@ -189,7 +189,7 @@
       @foreach ($attachments as $attachment)
       <div class="col-md-4 col-sm-4 col-xs-6 padding-10">
         <div class="agileinfo-effect wow fadeInUp animated" data-wow-delay=".3s">
-          <a href="{{ $attachment->url }}" class="swipebox" title="{{ $attachment->file_desc }}">
+          <a href="{{ $attachment->original_url }}" class="swipebox" title="{{ $attachment->file_desc }}">
             <img src="{{ $attachment->url }}" alt="{{ $attachment->file_desc }}" class="img-responsive" />
             <div class="figcaption">
               <p>{{ $attachment->file_desc }}</p>
