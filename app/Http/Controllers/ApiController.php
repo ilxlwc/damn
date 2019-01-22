@@ -12,6 +12,7 @@ use App\Repayment;
 use App\Intention;
 use App\Introduction;
 use Laravuel\LaravelWFC\Collector;
+use Image;
 
 class ApiController extends Controller
 {
@@ -243,8 +244,8 @@ class ApiController extends Controller
                 $img_path = 'https://'.$request->server('HTTP_HOST').'/uploads/thumbnail/'.$file_name;
 	            $img_origianl_path = 'https://'.$request->server('HTTP_HOST').'/uploads/'.date('Y').'/'.date('m').'/'.date('d').'/'.$file_name;
 
-                return response()->json($img_path, 200);
-                //return response()->json([$img_path, $img_origianl_path], 200);
+                //return response()->json($img_path, 200);
+                return response()->json([$img_path, $img_origianl_path], 200);
             }else{
                 return 400;
             }
